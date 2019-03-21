@@ -63,3 +63,4 @@ typings/
 pkg
 lib
 .merlin
+dist
