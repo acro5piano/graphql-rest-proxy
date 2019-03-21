@@ -53,6 +53,8 @@ type Query {
 
 ```sh
 graphql-rest-proxy schema.graphql
+
+# => graphql-rest-proxy is running on http://localhost:5252
 ```
 
 **STEP 3. Request!**
