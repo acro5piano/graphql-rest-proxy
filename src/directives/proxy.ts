@@ -15,16 +15,20 @@ export function getProxyDirective(args: GraphQLArgument[]) {
   const options = {
     uri: baseUri,
     method,
-    qs: {
-      access_token: 'xxxxx xxxxx', // -> uri + '?access_token=xxxxx%20xxxxx'
-    },
+    // qs: {
+    //   access_token: 'xxxxx xxxxx', // -> uri + '?access_token=xxxxx%20xxxxx'
+    // },
     headers: {
-      'User-Agent': 'Request-Promise',
+      'User-Agent': 'graphql-rest-proxy',
     },
     json: true, // Automatically parses the JSON string in the response
   }
 
   return async function proxy(root: any, _args: any, _ctx: Root, _all: any) {
+    const currentPath = _all.fieldNodes[0].name.value
+    if (currentPath in root) {
+      return root[currentPath]
+    }
     options.uri = buildUri(options.uri, root.id)
     return rp(options)
   }
