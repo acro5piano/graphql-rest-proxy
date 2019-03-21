@@ -52,7 +52,7 @@ type Query {
 **STEP 2. Run your proxy server.**
 
 ```sh
-# TODO: create cli soon
+graphql-rest-proxy schema.graphql
 ```
 
 **STEP 3. Request!**
