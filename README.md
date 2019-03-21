@@ -52,3 +52,9 @@ curl -XPOST http://localhost:5252/graphql -d query='query { getUser { id posts {
 # Development Status
 
 Beta. I will publish soon.
+
+TODO:
+
+- [ ] Create CLI
+- [ ] Parameter proxy
+- [ ] Input object
