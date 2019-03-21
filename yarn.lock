@@ -802,15 +802,6 @@
     rollup "^1.1.0"
     rollup-plugin-babel "^4.3.0"
 
-"@pika/plugin-source-bucklescript@^0.3.14":
-  version "0.3.14"
-  resolved "https://registry.yarnpkg.com/@pika/plugin-source-bucklescript/-/plugin-source-bucklescript-0.3.14.tgz#cacc49e724ed6df836922d3883abed40e269f4ed"
-  integrity sha512-VoDLYqgO8Ki7FNZQaX131vMuxHU3P5NxD0UK7C888v3B+NRfEaqnxELctjGkxF8Bu9PZep1K0FsfSI+/202ClQ==
-  dependencies:
-    "@pika/types" "^0.3.5"
-    rollup "^1.1.0"
-    rollup-plugin-bucklescript "^0.7.0"
-
 "@pika/plugin-ts-standard-pkg@^0.3.14":
   version "0.3.14"
   resolved "https://registry.yarnpkg.com/@pika/plugin-ts-standard-pkg/-/plugin-ts-standard-pkg-0.3.14.tgz#8f0edf3f9f13cd2789982d386971a76d07be3f17"
@@ -1369,29 +1360,12 @@ browserslist@^4.4.2, browserslist@^4.5.1:
     electron-to-chromium "^1.3.116"
     node-releases "^1.1.11"
 
-bs-express@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/bs-express/-/bs-express-0.10.0.tgz#66e07cdccdaa49abb6af09d3e24399389acfb8f3"
-  integrity sha512-T3pxAiKUpX1F75KGFiYdhcM20YSj/UHoHj8dTXhLMUFpU7RiJKJA1gTgBAl4GC6KgKEWDZ7ycWJAEQRxBRNyiA==
-  dependencies:
-    express "^4.16.3"
-
 bs-logger@0.x:
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/bs-logger/-/bs-logger-0.2.6.tgz#eb7d365307a72cf974cc6cda76b68354ad336bd8"
   integrity sha512-pd8DCoxmbgc7hyPKOvxtqNcjYoOsABPQdcCUjGp3d42VR2CX1ORhk2A87oqqu5R1kk+76nsxZupkmyd+MVtCog==
   dependencies:
     fast-json-stable-stringify "2.x"
-
-bs-platform@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-5.0.0.tgz#f9fded818bafc3891aeb85eb4e0d95b8d8f8b4d7"
-  integrity sha512-zxLobdIaf/r7go47hOgxcd6C0ANh7MYMEtZNb9Al7JdoekzFZI50F4GpZpP8kMh9Z+M5PoPE1WuryT4S8mT8Kg==
-
-bsb-js@^1.0.1:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/bsb-js/-/bsb-js-1.1.7.tgz#12cc91e974f5896b3a2aa8358419d24e56f552c3"
-  integrity sha512-FSR7d5Kb6KfVI5sLz9bEeD9pbA9F4Zbkk1xa6R9CJtyd+dJ7mIkxoXqv7cw7HWcuee+VpIhmjYzrplnFd/5Qgg==
 
 bser@^2.0.0:
   version "2.0.0"
@@ -2092,7 +2066,7 @@ expect@^24.5.0:
     jest-message-util "^24.5.0"
     jest-regex-util "^24.3.0"
 
-express@^4.16.3, express@^4.16.4:
+express@^4.16.4:
   version "4.16.4"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.4.tgz#fddef61926109e24c515ea97fd2f1bdbf62df12e"
   integrity sha512-j12Uuyb4FMrd/qQAm6uCHAkPtO8FDTRJZBDd5D2KOL2eLaz1yUNdUB/NOIyq0iU4q4cFarsUCrnFDPBcnksuOg==
@@ -3444,11 +3418,6 @@ json5@2.x, json5@^2.1.0:
   dependencies:
     minimist "^1.2.0"
 
-json5@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
-  integrity sha1-Hq3nrMASA0rYTiOWdn6tn6VJWCE=
-
 json5@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
@@ -4400,13 +4369,6 @@ react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.4.tgz#90f336a68c3a29a096a3d648ab80e87ec61482a2"
   integrity sha512-PVadd+WaUDOAciICm/J1waJaSvgq+4rHE/K70j0PFqKhkTBsPv/82UGQJNXAngz1fOQLLxI6z1sEDmJDQhCTAA==
 
-read-bsconfig@^1.0.3:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/read-bsconfig/-/read-bsconfig-1.0.5.tgz#fef6b45b5ff43a26e138389f19282501c6d17d28"
-  integrity sha512-xw/5UYFJNQaE3bh/5NPA6zPKn9qUGEWPKHvClzRhvIZru+Q2uLBVMm6VBo7CvAIp8w+q4QuQe/Vogoc4tccfjw==
-  dependencies:
-    json5 "^0.5.1"
-
 read-pkg-up@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-4.0.0.tgz#1b221c6088ba7799601c808f91161c66e58f8978"
@@ -4620,7 +4582,7 @@ resolve@1.1.7:
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
   integrity sha1-IDEU2CrSxe2ejgQRs5ModeiJ6Xs=
 
-resolve@1.x, resolve@^1.10.0, resolve@^1.3.2, resolve@^1.5.0:
+resolve@1.x, resolve@^1.10.0, resolve@^1.3.2:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.10.0.tgz#3bdaaeaf45cc07f375656dfd2e54ed0810b101ba"
   integrity sha512-3sUr9aq5OfSg2S9pNtPA9hL1FVEAjvfOC4leW0SNf/mpnaakz2a9femSd6LqAww2RaFctwyf1lCqnTHuF1rxDg==
@@ -4655,17 +4617,7 @@ rollup-plugin-babel@^4.3.0:
     "@babel/helper-module-imports" "^7.0.0"
     rollup-pluginutils "^2.3.0"
 
-rollup-plugin-bucklescript@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-bucklescript/-/rollup-plugin-bucklescript-0.7.0.tgz#2955f9ed21316c0f4e6cc26a251e9e8e90617193"
-  integrity sha512-4py0qQtWRP96pogpVW/mzcwU7ZDIe+Zph995yLb4tENrO36gnhduAFF0qBfmgekc28/Q9PvBorBoOr7TSheKpw==
-  dependencies:
-    bsb-js "^1.0.1"
-    read-bsconfig "^1.0.3"
-    resolve "^1.5.0"
-    rollup-pluginutils "^2.0.1"
-
-rollup-pluginutils@^2.0.1, rollup-pluginutils@^2.3.0:
+rollup-pluginutils@^2.3.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.5.0.tgz#23be0f05ac3972ea7b08fc7870cb91fde5b23a09"
   integrity sha512-9Muh1H+XB5f5ONmKMayUoTYR1EZwHbwJJ9oZLrKT5yuTf/RLIQ5mYIGsrERquVucJmjmaAW0Y7+6Qo1Ep+5w3Q==
