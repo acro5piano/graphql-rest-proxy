@@ -1,10 +1,18 @@
 {
   "name": "graphql-rest-proxy",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "description": "Turn your REST API into GraphQL.",
   "main": "dist/index.js",
   "repository": "git@github.com:acro5piano/graphql-rest-proxy",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "graphql",
+    "rest",
+    "proxy",
+    "typescript",
+    "expressjs"
+  ],
   "scripts": {
     "start": "npm run ts-run ./src/index.ts",
     "ts-run": "ts-node -T -r tsconfig-paths/register --project tsconfig.dev.json",
