@@ -81,28 +81,28 @@ describe('graphql-rest-proxy', () => {
       },
     })
   })
-  //
-  // it('can post', async () => {
-  //   let res = await request(server)
-  //     .post('/graphql')
-  //     .send({
-  //       query: gql`
-  //         query CreateUser {
-  //           createUser {
-  //             id
-  //             name
-  //           }
-  //         }
-  //       `,
-  //     })
-  //     .expect(200)
-  //   expect(res.body).toEqual({
-  //     data: {
-  //       createUser: {
-  //         id: 1,
-  //         name: 'Kazuya',
-  //       },
-  //     },
-  //   })
-  // })
+
+  it('can post', async () => {
+    let res = await request(server)
+      .post('/graphql')
+      .send({
+        query: gql`
+          query CreateUser {
+            createUser {
+              id
+              name
+            }
+          }
+        `,
+      })
+      .expect(200)
+    expect(res.body).toEqual({
+      data: {
+        createUser: {
+          id: 1,
+          name: 'Kazuya',
+        },
+      },
+    })
+  })
 })
