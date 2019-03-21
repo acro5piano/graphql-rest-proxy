@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "allowJs": true,
-    "target": "es2015",
-    "module": "commonjs",
+    "allowJs": false,
+    "target": "es2018",
+    "module": "esnext",
+
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+
     "declaration": false,
     "sourceMap": true,
     "removeComments": true,

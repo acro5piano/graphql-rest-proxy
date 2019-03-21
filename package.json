@@ -1,16 +1,16 @@
 {
   "name": "graphql-rest-proxy",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.1",
+  "main": "dist/index.js",
   "repository": "git@github.com:acro5piano/graphql-rest-proxy",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "nodemon",
     "dev": "nodemon",
-    "prepublish": "npm-run-all clean build",
+    "prepublish": "npm-run-all clean",
     "clean": "rm -rf dist/*",
-    "build": "rollup -c",
+    "build": "pack build",
     "ts-run": "node -r ts-node/register/transpile-only -r tsconfig-paths/register",
     "test": "cross-env NODE_ENV=testing jest"
   },
@@ -24,6 +24,10 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@pika/pack": "^0.3.5",
+    "@pika/plugin-build-node": "^0.3.14",
+    "@pika/plugin-source-bucklescript": "^0.3.14",
+    "@pika/plugin-ts-standard-pkg": "^0.3.14",
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.16.1",
     "@types/graphql": "^14.0.7",
@@ -31,6 +35,7 @@
     "@types/node": "^11.11.4",
     "@types/supertest": "^2.0.7",
     "@types/uuid": "^3.4.4",
+    "bs-platform": "^5.0.0",
     "cross-env": "^5.2.0",
     "jest": "^24.5.0",
     "nodemon": "^1.18.10",
@@ -41,5 +46,15 @@
     "ts-node": "^8.0.3",
     "tsconfig-paths": "^3.8.0",
     "typescript": "^3.3.4000"
+  },
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-source-bucklescript"
+      ],
+      [
+        "@pika/plugin-build-node"
+      ]
+    ]
   }
 }
