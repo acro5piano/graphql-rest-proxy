@@ -1,10 +1,20 @@
+[![npm version](https://badge.fury.io/js/graphql-rest-proxy.svg)](https://badge.fury.io/js/graphql-rest-proxy)
+
 # graphql-rest-proxy
 
 Convert your REST server to GraphQL server.
 
 # Install
 
-// TODO
+```sh
+npm -g install graphql-rest-proxy
+```
+
+Or if you use Yarn:
+
+```sh
+yarn global add graphql-rest-proxy
+```
 
 # Why
 
@@ -12,11 +22,11 @@ We all know GraphQL is great, so you want to move from REST API to GraphQL.
 
 However, it requires a lot of effort to replace your current REST api with a brand new GraphQL server.
 
-`graphql-rest-proxy` is a proxy server. It proxies GraphQL to REST api according to the defined schema.
+`graphql-rest-proxy` comes in to address this issues. It proxies GraphQL to REST api according to the defined schema.
 
 # Usage
 
-STEP 1. Define your schema.
+**STEP 1. Define your schema.**
 
 `schema.graphql`
 
@@ -37,24 +47,31 @@ type Query {
 }
 ```
 
-STEP 2. Run your proxy server.
+**STEP 2. Run your proxy server.**
 
 ```sh
 # TODO: create cli soon
 ```
 
-STEP 3. Request!
+**STEP 3. Request!**
 
 ```
-curl -XPOST http://localhost:5252/graphql -d query='query { getUser { id posts { id } } }'
+curl -XPOST http://localhost:5252/graphql -d query='query {
+  getUser {
+    id
+    posts {
+      id
+    }
+  }
+}'
 ```
 
 # Development Status
 
-Beta. I will publish soon.
+Still in Beta.
 
 TODO:
 
-- [ ] Create CLI
+- [x] Create CLI
 - [ ] Parameter proxy
 - [ ] Input object
