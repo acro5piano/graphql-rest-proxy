@@ -11,7 +11,7 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-{{ checksum "yarn.lock" }}
           - v1-dependencies-
 
       - run: yarn install
@@ -19,9 +19,9 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
 
-      - run: yarn lint
-      - run: yarn format
+      # - run: yarn lint
+      # - run: yarn format
       - run: yarn test:coverage
       - run: yarn codecov -t $CODECOV_TOKEN

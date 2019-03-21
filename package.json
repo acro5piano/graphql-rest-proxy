@@ -43,6 +43,7 @@
     "@types/request-promise": "^4.1.42",
     "@types/supertest": "^2.0.7",
     "@types/uuid": "^3.4.4",
+    "codecov": "^3.2.0",
     "cross-env": "^5.2.0",
     "jest": "^24.5.0",
     "nodemon": "^1.18.10",
