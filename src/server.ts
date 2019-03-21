@@ -10,7 +10,7 @@ server.use(bodyParser.json())
 server.use(require('cors')())
 
 server.post('/graphql', (req, res) => {
-  graphql(getSchema(), req.body.query, undefined, undefined, req.body.variables)
+  graphql(getSchema(), req.body.query, {}, { req, res }, req.body.variables)
     .then(result => {
       res.send(result)
     })

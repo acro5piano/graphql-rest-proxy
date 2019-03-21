@@ -2,6 +2,7 @@ import { Type } from './Type'
 import { InputObject } from './InputObject'
 import { GraphQLObjectType, GraphQLSchema } from 'graphql'
 import { Query } from './Query'
+import { add } from './typesProvider'
 
 type Mutation = Query
 
@@ -26,6 +27,10 @@ export class RootNode {
   }
 
   toGraphQLSchema() {
+    this.types.forEach(type => {
+      add(type)
+    })
+
     const queries = this.queries.reduce((acc, cur) => {
       return {
         ...acc,

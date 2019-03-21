@@ -1,9 +1,15 @@
-const _schemaStore = new Map<string, any>()
+import { GraphQLSchema } from 'graphql'
 
-export function setSchema(schema: any) {
+const _schemaStore = new Map<string, GraphQLSchema>()
+
+export function setSchema(schema: GraphQLSchema) {
   _schemaStore.set('schema', schema)
 }
 
 export function getSchema() {
-  return _schemaStore.get('schema')
+  const schema = _schemaStore.get('schema')
+  if (!schema) {
+    throw new Error('Schema is not initialized')
+  }
+  return schema
 }

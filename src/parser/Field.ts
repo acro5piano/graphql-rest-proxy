@@ -1,43 +1,66 @@
 import {
   GraphQLString,
   GraphQLInt,
-  // GraphQLNonNull,
-  // GraphQLList,
+  GraphQLList,
+  GraphQLNonNull,
   // GraphQLInputObjectType,
 } from 'graphql'
-// import { GraphQLField } from './interface'
+import { get } from './typesProvider'
+import { Modifier } from './interface'
 
 export class Field {
   name: string
   type: string
   resolver?: Function
+  modifiers: Modifier[]
 
-  constructor(name: string, type: string, resolver?: Function) {
+  constructor(name: string, type: string, modifiers = []) {
     this.name = name
     this.type = type
-    this.resolver = resolver
+    this.modifiers = modifiers
   }
 
   toGraphQLField() {
     return {
       [this.name]: {
-        type: this.getGraphQLType(),
+        type: this.getModifierFns().reduce((acc: any, g: any) => g(acc), this.getGraphQLType()),
+        resolve: this.resolver,
       },
     }
   }
 
-  private getGraphQLType() {
-    switch (this.name) {
+  setResolver(resolver: any) {
+    this.resolver = resolver
+  }
+
+  private getModifierFns() {
+    const fns: any = []
+
+    if (this.modifiers.includes('list')) {
+      fns.push(GraphQLList)
+    }
+
+    if (this.modifiers.includes('nonnull')) {
+      fns.push(GraphQLNonNull)
+    }
+
+    return fns
+  }
+
+  private getGraphQLType(): any {
+    switch (this.type) {
       case 'Int':
+      case 'Int!':
         return GraphQLInt
       case 'String':
+      case 'String!':
         return GraphQLString
       default:
-        throw new Error('cannot convert type')
+        const maybeType = get(this.type)
+        if (!maybeType) {
+          throw new Error('cannot convert type')
+        }
+        return maybeType.toGraphQLType()
     }
   }
 }
-
-// export function parseFieldFromField(field: GraphQLField) {
-//   return new Field(getTypeName(field), [new Field('id', 'Int')])
-// }

@@ -50,3 +50,5 @@ export interface GraphQLTree {
   definitions: GraphQLField[]
   arguments?: any[]
 }
+
+export type Modifier = 'list' | 'nonnull'

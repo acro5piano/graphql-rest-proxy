@@ -1,14 +1,8 @@
 import { Field } from './Field'
 import { GraphQLField } from './interface'
 import { getTypeName } from './utils'
-import {
-  GraphQLObjectType,
-  GraphQLString,
-  // GraphQLInt,
-  // GraphQLNonNull,
-  // GraphQLList,
-  // GraphQLInputObjectType,
-} from 'graphql'
+import { GraphQLObjectType } from 'graphql'
+import { getDirectiveInitializer, getReturnTypeAndModifiers } from './utils'
 
 export class Type {
   name: string
@@ -26,27 +20,33 @@ export class Type {
     }
     const type = new GraphQLObjectType({
       name: this.name,
-      fields: {
-        name: {
-          type: GraphQLString,
-        },
-      },
+      fields: this.getGraphQLField(),
     })
     this.compiled = type
     return type
   }
 
-  getGraphQLField() {
-    return this.fields.map(f => f.toGraphQLField()).reduce((acc, cur) => ({ ...acc, cur }), {})
+  private getGraphQLField(): any {
+    return this.fields
+      .map(f => f.toGraphQLField())
+      .reduce((acc, cur) => {
+        return {
+          ...acc,
+          ...cur,
+        }
+      }, {})
   }
 }
 
 export function parseTypeFromField(field: GraphQLField) {
   const fields = field.fields.map(f => {
-    if (!f.type || !f.type.name || typeof f.type.name === 'string' || !f.type.name.value) {
-      throw new Error('field type is null')
-    }
-    return new Field(f.name.value, f.type.name.value)
+    const [name, modifiers] = getReturnTypeAndModifiers(f.type)
+    const createdField = new Field(f.name.value, name, modifiers)
+    f.directives.forEach(d => {
+      const resolver = getDirectiveInitializer(d)(d.arguments)
+      createdField.setResolver(resolver)
+    })
+    return createdField
   })
   return new Type(getTypeName(field), fields)
 }

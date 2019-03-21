@@ -1,12 +1,12 @@
-import { GraphQLField } from './interface'
-import { getDirectiveInitializer } from './utils'
-
-type Modifier = 'list' | 'nonnull'
+import { GraphQLField, Modifier } from './interface'
+import { getDirectiveInitializer, getReturnTypeAndModifiers } from './utils'
 
 export class Query {
   name: string
   returnTypeName: string
   resolver?: () => any
+
+  // TODO: Field と共通化する
   returnTypeModifiers: Modifier[]
 
   constructor(name: string, returnTypeName: string, returnTypeModifiers: Modifier[] = []) {
@@ -32,14 +32,4 @@ export function parseQueryFromField(field: GraphQLField) {
   })
 
   return query
-}
-
-function getReturnTypeAndModifiers(type: any) {
-  if (type.name) {
-    return [type.name.value, []]
-  }
-  if (type.kind === 'ListType') {
-    return [type.type.name.value, ['list']]
-  }
-  throw new Error('cannnot get return type')
 }

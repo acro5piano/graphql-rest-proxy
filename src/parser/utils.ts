@@ -21,3 +21,17 @@ export function getDirectiveInitializer(directive: GraphQLDirective) {
       throw new Error('directive not found')
   }
 }
+
+export function getReturnTypeAndModifiers(type: any) {
+  if (type.name) {
+    return [type.name.value, []]
+  }
+  if (type.kind === 'ListType') {
+    return [type.type.name.value, ['list']]
+  }
+  if (type.kind === 'NonNullType') {
+    return [type.type.name.value, ['nonnull']]
+  }
+  console.log(type.kind)
+  throw new Error('cannnot get return type')
+}
