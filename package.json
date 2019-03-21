@@ -9,8 +9,9 @@
     "start": "npm run ts-run ./src/index.ts",
     "ts-run": "ts-node -T -r tsconfig-paths/register --project tsconfig.dev.json",
     "dev": "nodemon",
-    "mock": "npm run ts-run run-mock-server.ts",
+    "mock": "npm run ts-run src/__tests__/run-mock-server.ts",
     "prepublish": "npm-run-all clean build",
+    "publish": "node ./node_modules/.bin/pack publish",
     "clean": "rm -rf dist/*",
     "build": "pack build",
     "test": "cross-env NODE_ENV=testing jest"
