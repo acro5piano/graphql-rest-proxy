@@ -22,9 +22,9 @@ yarn global add graphql-rest-proxy
 
 We all know GraphQL is great, so you want to move from REST API to GraphQL.
 
-However, it requires a lot of effort to replace your current REST api with a brand new GraphQL server.
+However, it requires a lot of effort to replace your current REST API with a brand new GraphQL server.
 
-`graphql-rest-proxy` comes in to address this issues. It proxies GraphQL to REST api according to the defined schema.
+`graphql-rest-proxy` comes in to address this issues. It proxies GraphQL to REST API according to the defined schema.
 
 # Usage
 
@@ -68,6 +68,67 @@ curl -XPOST http://localhost:5252/graphql -d query='query {
 }'
 ```
 
+# Features
+
+**Reference ID**
+
+You can refer the id of parent object by `$id`.
+
+```graphql
+type Post {
+  id: Int
+  title: String
+}
+
+type User {
+  id: Int
+  name: String
+  posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
+}
+```
+
+**Request as less as possible**
+
+`graphql-rest-proxy` does not request if proxy response includes child object. This means you can reduce API call if you includes child object.
+
+For example, if the schema is like this:
+
+```graphql
+type Post {
+  id: Int
+  title: String
+}
+
+type User {
+  id: Int
+  name: String
+  posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
+}
+
+type Query {
+  getUser: User @proxy(get: "http://my-rest-api.com/user")
+}
+```
+
+And REST API returns like this:
+
+```sh
+curl http://my-rest-api.com/user
+```
+
+```json
+{
+  "id": 1,
+  "name": "acro5piano",
+  "posts": {
+    "id": 1,
+    "title": "graphql-rest-proxy"
+  }
+}
+```
+
+In this case, `posts` is embbed in response, so `graphql-rest-proxy` doesn't request to `http://my-rest-api.com/users/$id/posts`.
+
 # Development Status
 
 Still in Beta.
@@ -75,5 +136,7 @@ Still in Beta.
 TODO:
 
 - [x] Create CLI
+- [ ] Mutation
 - [ ] Parameter proxy
 - [ ] Input object
+- [ ] Logging
