@@ -1,4 +1,4 @@
-import * as rp from 'request-promise'
+import rp from 'request-promise'
 import { Root } from '../interface'
 import { GraphQLArgument } from '../parser/interface'
 

@@ -1,5 +1,5 @@
-import * as express from 'express'
-import * as bodyParser from 'body-parser'
+import express from 'express'
+import bodyParser from 'body-parser'
 import { graphql } from 'graphql'
 import { getSchema } from './store'
 
@@ -22,3 +22,10 @@ server.post('/graphql', (req, res) => {
 server.get('/ok', (_req, res) => {
   res.send({ data: 'ok' })
 })
+
+const port = process.env.PORT || 5252
+export async function runserver() {
+  server.listen(port, () => {
+    console.log(`graphql-rest-proxy is running on http://localhost:${port}`)
+  })
+}

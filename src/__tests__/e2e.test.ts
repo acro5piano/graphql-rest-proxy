@@ -1,4 +1,4 @@
-import * as request from 'supertest'
+import request from 'supertest'
 import { server } from '../server'
 import { parse } from '../parser/parse'
 import { setSchema } from '../store'

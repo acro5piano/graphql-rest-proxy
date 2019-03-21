@@ -9,6 +9,7 @@
     "start": "npm run ts-run ./src/index.ts",
     "ts-run": "ts-node -T -r tsconfig-paths/register --project tsconfig.dev.json",
     "dev": "nodemon",
+    "mock": "npm run ts-run run-mock-server.ts",
     "prepublish": "npm-run-all clean build",
     "clean": "rm -rf dist/*",
     "build": "pack build",
@@ -23,11 +24,13 @@
     "graphql-tag": "^2.10.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "yargs": "^13.0.0-candidate.0"
   },
   "devDependencies": {
     "@pika/pack": "^0.3.5",
     "@pika/plugin-build-node": "^0.3.14",
+    "@pika/plugin-simple-bin": "^0.3.14",
     "@pika/plugin-ts-standard-pkg": "^0.3.14",
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.16.1",
@@ -56,6 +59,13 @@
       ],
       [
         "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-simple-bin",
+        {
+          "bin": "graphql-rest-proxy",
+          "minNodeVersion": 8
+        }
       ]
     ]
   }

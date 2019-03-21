@@ -2,12 +2,13 @@
   "compilerOptions": {
     /* Basic Options */
     "allowJs": false,
+    "resolveJsonModule": true,
 
     "target": "es2018",
     "module": "esnext",
 
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
 
     "declaration": true,

@@ -1,0 +1,16 @@
+type Post {
+  id: Int
+  title: String
+}
+
+type User {
+  id: Int
+  name: String
+  posts: [Post] @proxy(get: "http://localhost:5620/users/$id/posts")
+}
+
+type Query {
+  getUser: User @proxy(get: "http://localhost:5620/user")
+  getUsers: [User] @proxy(get: "http://localhost:5620/users")
+  createUser: User @proxy(post: "http://localhost:5620/users")
+}
