@@ -10,7 +10,7 @@ module.exports = {
   },
   collectCoverage: false,
   coverageDirectory: './coverage/',
-  collectCoverageFrom: ['<rootDir>/src/*.ts'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   automock: false,
   testEnvironment: 'jsdom',
   testURL: 'http://localhost/',

@@ -14,7 +14,8 @@
     "publish": "node ./node_modules/.bin/pack publish",
     "clean": "rm -rf dist/*",
     "build": "pack build",
-    "test": "cross-env NODE_ENV=testing jest"
+    "test": "cross-env NODE_ENV=testing jest",
+    "test:coverage": "cross-env NODE_ENV=testing jest --coverage"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
