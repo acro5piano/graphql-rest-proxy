@@ -1,7 +1,5 @@
-import { GraphQLString, GraphQLInt } from 'graphql'
-import { get } from './typesProvider'
 import { Modifier } from './interface'
-import { applyModifiers } from './utils'
+import { getGraphQLType, applyModifiers } from './utils'
 
 export class Field {
   name: string
@@ -18,7 +16,7 @@ export class Field {
   toGraphQLField() {
     const obj = {
       [this.name]: {
-        type: applyModifiers(this.getGraphQLType(), this.modifiers),
+        type: applyModifiers(getGraphQLType(this.type), this.modifiers),
         resolve: this.resolver,
       },
     }
@@ -30,22 +28,5 @@ export class Field {
 
   setResolver(resolver: any) {
     this.resolver = resolver
-  }
-
-  private getGraphQLType(): any {
-    switch (this.type) {
-      case 'Int':
-      case 'Int!':
-        return GraphQLInt
-      case 'String':
-      case 'String!':
-        return GraphQLString
-      default:
-        const maybeType = get(this.type)
-        if (!maybeType) {
-          throw new Error('cannot convert type')
-        }
-        return maybeType.toGraphQLType()
-    }
   }
 }

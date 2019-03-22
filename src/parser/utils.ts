@@ -2,7 +2,8 @@ import { GraphQLField } from './interface'
 import { getProxyDirective } from '../directives/proxy'
 import { GraphQLDirective } from './interface'
 import { Modifier } from './interface'
-import { GraphQLList, GraphQLNonNull } from 'graphql'
+import { GraphQLString, GraphQLInt, GraphQLList, GraphQLNonNull } from 'graphql'
+import { get } from './typesProvider'
 
 export function getTypeName(field: GraphQLField): string {
   if (field.name) {
@@ -50,4 +51,21 @@ export function applyModifiers(type: any, modifiers: Modifier[]) {
   }
 
   return fns.reduce((acc: any, g: any) => g(acc), type)
+}
+
+export function getGraphQLType(type: string): any {
+  switch (type) {
+    case 'Int':
+    case 'Int!':
+      return GraphQLInt
+    case 'String':
+    case 'String!':
+      return GraphQLString
+    default:
+      const maybeType = get(type)
+      if (!maybeType) {
+        throw new Error('cannot convert type')
+      }
+      return maybeType.toGraphQLType()
+  }
 }

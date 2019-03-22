@@ -28,7 +28,7 @@ export function getProxyDirective(args: GraphQLArgument[]) {
       return parent[fieldName]
     }
     const options = getBaseOptions()
-    options.uri = buildUri(options.uri, parent.id)
+    options.uri = buildUri(options.uri, parent.id, args.id)
     options.headers = {
       ...req.headers,
       ...options.headers,
@@ -42,13 +42,21 @@ export function getProxyDirective(args: GraphQLArgument[]) {
   }
 }
 
-function buildUri(uri: string, id: any) {
-  const idReplaced = uri.replace(/$id/g, id)
+function buildUri(uri: string, parentId?: string | number, argId?: string | number) {
+  let builtUri = uri
+
+  if (parentId) {
+    builtUri = builtUri.replace('$id', String(parentId))
+  }
+  if (argId) {
+    builtUri = builtUri.replace('$id', String(argId))
+  }
+
   if (uri.startsWith('http')) {
-    return idReplaced
+    return builtUri
   }
   const { baseUrl } = getConfig()
-  return `${baseUrl}${idReplaced}`
+  return `${baseUrl}${builtUri}`
 }
 
 export function hasDirectiveArgument(args: GraphQLArgument[], argument: string) {

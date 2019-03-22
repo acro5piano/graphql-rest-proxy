@@ -43,6 +43,14 @@ app.post('/users', (_req, res) => {
   res.send(userMock)
 })
 
+app.patch('/users/:id', (_req, res) => {
+  res.send(userMock)
+})
+
+app.put('/users/:id', (_req, res) => {
+  res.send(userMock)
+})
+
 let server: any
 
 export function start(port = 5620) {

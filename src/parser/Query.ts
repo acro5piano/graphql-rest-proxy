@@ -1,7 +1,7 @@
 import { GraphQLField, Modifier } from './interface'
 import { getDirectiveInitializer, getReturnTypeAndModifiers } from './utils'
-import { getStrict } from './typesProvider'
-import { applyModifiers } from './utils'
+import { get } from './typesProvider'
+import { getGraphQLType, applyModifiers } from './utils'
 
 export interface Argument {
   name: string
@@ -40,14 +40,22 @@ export class Query {
 
   getArgs() {
     return this.arguments.reduce((car, cur) => {
-      const inputType = getStrict(cur.typeName)
+      const type = this.getInputTypeOrScalarType(cur.typeName)
       return {
         ...car,
         [cur.name]: {
-          type: applyModifiers(inputType.toGraphQLType(), cur.modifiers),
+          type: applyModifiers(type, cur.modifiers),
         },
       }
     }, {})
+  }
+
+  private getInputTypeOrScalarType(typeName: string) {
+    const inputType = get(typeName)
+    if (inputType) {
+      return inputType.toGraphQLType()
+    }
+    return getGraphQLType(typeName)
   }
 }
 
