@@ -44,8 +44,8 @@ app.post('/users', (_req, res) => {
 
 let server: any
 
-export function start() {
-  server = app.listen(5620, () => {})
+export function start(port = 5620) {
+  server = app.listen(port, () => {})
 }
 
 export function terminate() {

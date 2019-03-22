@@ -1,18 +1,50 @@
-import { readFile } from 'fs'
+import { resolve } from 'path'
+import { readFile, existsSync } from 'fs'
 import { promisify } from 'util'
+import yargs from 'yargs'
+import chalk from 'chalk'
 import { printSchema } from 'graphql'
 import { runserver } from './server'
-import { setSchema } from './store'
+import { setSchema, setConfig, getConfig, Config } from './store'
 import { parse } from './parser/parse'
 import { getVersion } from './version'
-import yargs from 'yargs'
 
 const readFilePromise = promisify(readFile)
+
+function requireFromCwd(path: string) {
+  return require(`${process.cwd()}/${path}`)
+}
 
 export async function run() {
   yargs
     .version(await getVersion())
-    .command(['serve <file>', '$0 <file>'], 'Start graphql-rest-proxy server.', {}, async args => {
+    .usage('Usage: $0 <command> [options]')
+    .command(['$0 <file>'], 'Start graphql-rest-proxy server.', {}, async args => {
+      if (args.config) {
+        const path = String(args.config)
+        if (!existsSync(path)) {
+          console.log(chalk.yellow(`Config file is not found: ${resolve(path)}`))
+          console.log(chalk.yellow('Make sure your config file is set properly and it exists.'))
+          process.exit(2)
+        }
+        try {
+          const config: Config = requireFromCwd(path)
+          setConfig(config)
+        } catch {
+          console.log(chalk.yellow(`Cannot read config file: ${resolve(path)}`))
+          process.exit(2)
+        }
+      }
+
+      // CLI option is prior to file config
+      const config = getConfig()
+      if (args.port) {
+        config.port = Number(args.port)
+      }
+      if (args.baseUrl) {
+        config.baseUrl = String(args.baseUrl)
+      }
+      setConfig(config)
       await initSchema(args.file as string)
       runserver()
     })
@@ -20,13 +52,36 @@ export async function run() {
       const schema = await initSchema(args.file as string)
       console.log(printSchema(schema))
     })
-    .help()
+    .alias('c', 'config')
+    .describe('c', 'Specify config file')
+    .alias('p', 'port')
+    .describe('p', 'Specify port')
+    .alias('b', 'baseUrl')
+    .describe('b', 'Specify proxy base url')
+    .help('h')
+    .alias('h', 'help')
     .parse()
 }
 
 async function initSchema(file: string) {
-  const schemaString = await readFilePromise(file, 'utf8')
-  const schema = parse(schemaString)
-  setSchema(schema)
-  return schema
+  let schemaString: string = ''
+  try {
+    schemaString = await readFilePromise(file, 'utf8')
+  } catch {
+    console.log(chalk.yellow(`Cannot read schema file: ${resolve(file)}`))
+    process.exit(1)
+  }
+  if (!schemaString) {
+    console.log(chalk.yellow('Schema file is empty or not exist.'))
+    process.exit(1)
+  }
+  try {
+    const schema = parse(schemaString)
+    setSchema(schema)
+    return schema
+  } catch {
+    console.log(chalk.yellow(`Cannot read schema file: ${resolve(file)}`))
+    process.exit(1)
+    return '' as any // TS hack
+  }
 }

@@ -1,6 +1,7 @@
 import rp from 'request-promise'
-import { Root } from '../interface'
+import { Context } from '../interface'
 import { GraphQLArgument } from '../parser/interface'
+import { getConfig } from '../store'
 
 const methods = ['get', 'post', 'put', 'patch', 'delete']
 
@@ -24,18 +25,27 @@ export function getProxyDirective(args: GraphQLArgument[]) {
     json: true, // Automatically parses the JSON string in the response
   }
 
-  return async function proxy(root: any, _args: any, _ctx: Root, _all: any) {
+  return async function proxy(root: any, _args: any, { req }: Context, _all: any) {
     const currentPath = _all.fieldNodes[0].name.value
     if (currentPath in root) {
       return root[currentPath]
     }
     options.uri = buildUri(options.uri, root.id)
+    options.headers = {
+      ...req.headers,
+      ...options.headers,
+    }
     return rp(options)
   }
 }
 
 function buildUri(uri: string, id: any) {
-  return uri.replace('$id', id)
+  const idReplaced = uri.replace(/$id/g, id)
+  if (uri.startsWith('http')) {
+    return idReplaced
+  }
+  const { baseUrl } = getConfig()
+  return `${baseUrl}${idReplaced}`
 }
 
 export function hasDirectiveArgument(args: GraphQLArgument[], argument: string) {

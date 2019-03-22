@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-export interface Root {
+export interface Context {
   req: Request
   res: Response
 }
