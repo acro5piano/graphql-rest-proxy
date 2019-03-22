@@ -1,10 +1,12 @@
 import { GraphQLField, Modifier } from './interface'
 import { getDirectiveInitializer, getReturnTypeAndModifiers } from './utils'
+import { GraphQLString, GraphQLInputObjectType } from 'graphql'
 
 export class Query {
   name: string
   returnTypeName: string
   resolver?: () => any
+  arguments?: any
 
   // TODO: Field と共通化する
   returnTypeModifiers: Modifier[]
@@ -20,6 +22,22 @@ export class Query {
   }
 
   toGraphQLQuery() {}
+
+  getArgs() {
+    const UserInputType = new GraphQLInputObjectType({
+      name: 'UserInput',
+      fields: {
+        name: {
+          type: GraphQLString,
+        },
+      },
+    })
+    return {
+      user: {
+        type: UserInputType,
+      },
+    }
+  }
 }
 
 export function parseQueryFromField(field: GraphQLField) {

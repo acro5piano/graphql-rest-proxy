@@ -13,24 +13,25 @@ export function getProxyDirective(args: GraphQLArgument[]) {
   const method = methods[index]
   const baseUri = getDirectiveArgument(args, method)
 
-  const options = {
+  const getBaseOptions = () => ({
     uri: baseUri,
     method,
-    // qs: {
-    //   access_token: 'xxxxx xxxxx', // -> uri + '?access_token=xxxxx%20xxxxx'
-    // },
     headers: {
       'User-Agent': 'graphql-rest-proxy',
     },
-    json: true, // Automatically parses the JSON string in the response
-  }
+    json: true,
+  })
 
-  return async function proxy(root: any, _args: any, { req }: Context, _all: any) {
-    const currentPath = _all.fieldNodes[0].name.value
-    if (currentPath in root) {
-      return root[currentPath]
+  return async function proxy(parent: any, _args: any, { req }: Context, { fieldName }: any) {
+    // console.log(parent)
+    // console.log(_args)
+    // console.log(_all)
+
+    if (fieldName in parent) {
+      return parent[fieldName]
     }
-    options.uri = buildUri(options.uri, root.id)
+    const options = getBaseOptions()
+    options.uri = buildUri(options.uri, parent.id)
     options.headers = {
       ...req.headers,
       ...options.headers,

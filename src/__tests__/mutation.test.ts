@@ -16,10 +16,10 @@ describe('mutation', () => {
       }
 
       type Mutation {
-        createUser(user: UserInput!): User @proxy(post: "http://localhost:PORT/users")
-        updateUser(id: Int!, user: UserInput!): User
-          @proxy(patch: "http://localhost:PORT/users/$id")
-        deleteUser: User @proxy(delete: "http://localhost:PORT/user")
+        createUser(user: UserInput!): User @proxy(post: "http://localhost:PORT/users?create=true")
+        # updateUser(id: Int!, user: UserInput!): User
+        #   @proxy(patch: "http://localhost:PORT/users/$id")
+        # deleteUser: User @proxy(delete: "http://localhost:PORT/user")
       }
     `)
   })
@@ -31,13 +31,18 @@ describe('mutation', () => {
       .post('/graphql')
       .send({
         query: gql`
-          mutation CreateUser {
-            createUser {
+          mutation CreateUser($user: UserInput!) {
+            createUser(user: $user) {
               id
               name
             }
           }
         `,
+        variables: {
+          user: {
+            name: 'John',
+          },
+        },
       })
     expect(res.body).toEqual({
       data: {
