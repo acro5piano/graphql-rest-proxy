@@ -19,7 +19,6 @@ describe('query', () => {
 
       type Query {
         getUser: User @proxy(get: "http://localhost:PORT/user")
-        getUserById(id: Int!): User @proxy(get: "http://localhost:PORT/users/$id")
         getUsers: [User] @proxy(get: "http://localhost:PORT/users")
       }
     `)
@@ -71,6 +70,55 @@ describe('query', () => {
             },
           ],
         },
+      },
+    })
+  })
+
+  it('can get many', async () => {
+    let res = await request(server)
+      .post('/graphql')
+      .send({
+        query: gql`
+          query GetUsers {
+            getUsers {
+              id
+              name
+              posts {
+                id
+              }
+            }
+          }
+        `,
+      })
+      .expect(200)
+    expect(res.body).toEqual({
+      data: {
+        getUsers: [
+          {
+            id: 1,
+            name: 'Kazuya',
+            posts: [
+              {
+                id: 1,
+              },
+              {
+                id: 1,
+              },
+            ],
+          },
+          {
+            id: 1,
+            name: 'Kazuya',
+            posts: [
+              {
+                id: 1,
+              },
+              {
+                id: 1,
+              },
+            ],
+          },
+        ],
       },
     })
   })

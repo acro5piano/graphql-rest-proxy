@@ -26,6 +26,10 @@ app.get('/user', (_req, res) => {
   res.send(userMock)
 })
 
+app.get('/users/:id', (_req, res) => {
+  res.send(userMock)
+})
+
 app.get('/user_with_posts', (_req, res) => {
   res.send({ ...userMock, posts: [postMock] })
 })
