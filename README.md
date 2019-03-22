@@ -90,7 +90,7 @@ type Query {
 }
 ```
 
-**Query With Parameters**
+**Query with Parameters**
 
 You can refer the id of query args by `$id`.
 
@@ -103,6 +103,52 @@ type User {
 type Query {
   getUserById(id: Int!): User @proxy(get: "http://my-rest-api.com/users/$id")
 }
+```
+
+**Mutation with Input Parameters**
+
+Mutation forward `variables` to the REST API.
+
+```graphql
+type UserInput {
+  name: String!
+}
+
+type User {
+  id: Int
+  name: String
+}
+
+type Mutation {
+  createUser(user: UserInput!): User @proxy(post: "http://my-rest-api.com/users")
+  updateUser(id: Int!, user: UserInput!): User @proxy(patch: "http://my-rest-api.com/users/$id")
+}
+```
+
+Request example:
+
+```javascript
+fetch('http://localhost:5252/graphql', {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    query: gql`
+      mutation UpdateUser($id: Int!, $user: UserInput!) {
+        updateUser(id: $id, user: $user) {
+          id
+          name
+        }
+      }
+    `,
+    variables: {
+      id: 1,
+      user: {
+        name: 'acro5piano',
+      },
+    },
+  }),
+})
 ```
 
 **Query Nested Object**
@@ -212,8 +258,8 @@ Still in Beta.
 
 TODO:
 
-- [x] Create CLI
-- [ ] Mutation
-- [ ] Parameter proxy
-- [ ] Input object
+- [ ] More type support
+  - [ ] Fragment
+  - [ ] Scalar
+- [ ] Refactoring
 - [ ] Logging
