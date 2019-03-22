@@ -20,4 +20,5 @@ type Query {
 
 type Mutation {
   createUser(user: UserInput): User @proxy(post: "/users")
+  updateUser(id: Int!, user: UserInput!): User @proxy(patch: "/users")
 }

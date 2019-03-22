@@ -129,6 +129,7 @@ Request example:
 
 ```javascript
 fetch('http://localhost:5252/graphql', {
+  method: 'patch',
   headers: {
     'Content-Type': 'application/json',
   },
