@@ -1,9 +1,9 @@
 import { Type } from './Type'
 import { InputObject } from './InputObject'
 import { GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql'
-// import { GraphQLInputObjectType } from 'graphql'
 import { Query } from './Query'
 import { add } from './typesProvider'
+import { applyModifiers } from './utils'
 
 type Mutation = Query
 
@@ -57,7 +57,11 @@ export class RootNode {
       return {
         ...acc,
         [cur.name]: {
-          type: this.getType(cur.returnTypeName).toGraphQLType(),
+          type: applyModifiers(
+            this.getType(cur.returnTypeName).toGraphQLType(),
+            cur.returnTypeModifiers,
+          ),
+          args: cur.getArgs(),
           resolve: cur.resolver,
         },
       }
@@ -78,9 +82,12 @@ export class RootNode {
       return {
         ...acc,
         [cur.name]: {
-          type: this.getType(cur.returnTypeName).toGraphQLType(),
-          resolve: cur.resolver,
+          type: applyModifiers(
+            this.getType(cur.returnTypeName).toGraphQLType(),
+            cur.returnTypeModifiers,
+          ),
           args: cur.getArgs(),
+          resolve: cur.resolver,
         },
       }
     }, {})

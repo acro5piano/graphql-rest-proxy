@@ -26,22 +26,17 @@ However, it requires a lot of effort to replace your current REST API with a bra
 
 `graphql-rest-proxy` comes in to address this issues. It proxies GraphQL to REST API according to the defined schema.
 
-# Usage
+# Getting Started
 
 **STEP 1. Define your schema.**
 
 `schema.graphql`
 
 ```graphql
-type Post {
-  id: Int
-  title: String
-}
-
 type User {
   id: Int
   name: String
-  posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
+  isActive: Boolean
 }
 
 type Query {
@@ -60,19 +55,103 @@ graphql-rest-proxy schema.graphql
 **STEP 3. Request!**
 
 ```
-curl -XPOST http://localhost:5252/graphql -d query='query {
-  getUser {
-    id
-    posts {
-      id
-    }
-  }
-}'
+curl -XPOST -H 'Content-Type: application/json' \
+    -d '{ "query": "{ getUser { id name isActive } }" }' \
+    http://localhost:5252/graphql
 ```
 
-# Features
+It will return like this:
 
-**Reference ID**
+```
+{
+  "data": {
+    "getUser": {
+      "id": 1,
+      "name": "Tom",
+      "isActive": false
+    }
+  }
+}
+```
+
+# Examples
+
+**Basic Query Proxy**
+
+```graphql
+type User {
+  id: Int
+  name: String
+}
+
+type Query {
+  getUser: User @proxy(get: "http://my-rest-api.com/user")
+  getUsers: [User] @proxy(get: "http://my-rest-api.com/users")
+}
+```
+
+**Query with Parameters**
+
+You can refer the id of query args by `$id`.
+
+```graphql
+type User {
+  id: Int
+  name: String
+}
+
+type Query {
+  getUserById(id: Int!): User @proxy(get: "http://my-rest-api.com/users/$id")
+}
+```
+
+**Mutation with Input Parameters**
+
+Mutation forward `variables` to the REST API.
+
+```graphql
+type UserInput {
+  name: String!
+}
+
+type User {
+  id: Int
+  name: String
+}
+
+type Mutation {
+  createUser(user: UserInput!): User @proxy(post: "http://my-rest-api.com/users")
+  updateUser(id: Int!, user: UserInput!): User @proxy(patch: "http://my-rest-api.com/users/$id")
+}
+```
+
+Request example:
+
+```javascript
+fetch('http://localhost:5252/graphql', {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    query: gql`
+      mutation UpdateUser($id: Int!, $user: UserInput!) {
+        updateUser(id: $id, user: $user) {
+          id
+          name
+        }
+      }
+    `,
+    variables: {
+      id: 1,
+      user: {
+        name: 'acro5piano',
+      },
+    },
+  }),
+})
+```
+
+**Query Nested Object**
 
 You can refer the id of parent object by `$id`.
 
@@ -87,7 +166,13 @@ type User {
   name: String
   posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
 }
+
+type Query {
+  getUser: User @proxy(get: "http://my-rest-api.com/user")
+}
 ```
+
+# Notes
 
 **Request as less as possible**
 
@@ -156,14 +241,12 @@ You can also set a config file.
 
 ```javascript
 module.exports = {
-  // Base url.
-  // If this setting is enabled, you can set relative path like `@proxy(get: "/user")`
   baseUrl: 'https://myapi.com',
-
-  // Server listen port. Defualt to 5252.
   port: 3000,
 }
 ```
+
+And run
 
 ```sh
 graphql-rest-proxy --config proxy.config.js schema.graphql
@@ -175,8 +258,8 @@ Still in Beta.
 
 TODO:
 
-- [x] Create CLI
-- [ ] Mutation
-- [ ] Parameter proxy
-- [ ] Input object
+- [ ] More type support
+  - [ ] Fragment
+  - [ ] Scalar
+- [ ] Refactoring
 - [ ] Logging

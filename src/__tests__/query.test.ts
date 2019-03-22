@@ -12,14 +12,14 @@ describe('query', () => {
       }
 
       type User {
-        id: Int
+        id: Int!
         name: String
+        isActive: Boolean
         posts: [Post] @proxy(get: "http://localhost:PORT/users/$id/posts")
       }
 
       type Query {
         getUser: User @proxy(get: "http://localhost:PORT/user")
-        getUserById(id: Int!): User @proxy(get: "http://localhost:PORT/users/$id")
         getUsers: [User] @proxy(get: "http://localhost:PORT/users")
       }
     `)
@@ -45,7 +45,9 @@ describe('query', () => {
           query GetUser {
             getUser {
               __typename
+              id
               name
+              isActive
               posts {
                 __typename
                 id
@@ -59,7 +61,9 @@ describe('query', () => {
       data: {
         getUser: {
           __typename: 'User',
+          id: 1,
           name: 'Kazuya',
+          isActive: true,
           posts: [
             {
               __typename: 'Post',
@@ -71,6 +75,55 @@ describe('query', () => {
             },
           ],
         },
+      },
+    })
+  })
+
+  it('can get many', async () => {
+    let res = await request(server)
+      .post('/graphql')
+      .send({
+        query: gql`
+          query GetUsers {
+            getUsers {
+              id
+              name
+              posts {
+                id
+              }
+            }
+          }
+        `,
+      })
+      .expect(200)
+    expect(res.body).toEqual({
+      data: {
+        getUsers: [
+          {
+            id: 1,
+            name: 'Kazuya',
+            posts: [
+              {
+                id: 1,
+              },
+              {
+                id: 1,
+              },
+            ],
+          },
+          {
+            id: 1,
+            name: 'Kazuya',
+            posts: [
+              {
+                id: 1,
+              },
+              {
+                id: 1,
+              },
+            ],
+          },
+        ],
       },
     })
   })

@@ -15,6 +15,7 @@ app.use((req, _res, next) => {
 const userMock = {
   id: 1,
   name: 'Kazuya',
+  isActive: true,
 }
 
 const postMock = {
@@ -23,6 +24,10 @@ const postMock = {
 }
 
 app.get('/user', (_req, res) => {
+  res.send(userMock)
+})
+
+app.get('/users/:id', (_req, res) => {
   res.send(userMock)
 })
 
