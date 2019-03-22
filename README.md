@@ -39,7 +39,7 @@ type User {
 }
 
 type Query {
-  getUsers: [User] @proxy(get: "http://my-rest-api.com/users")
+  getUser: User @proxy(get: "http://my-rest-api.com/user")
 }
 ```
 
@@ -54,26 +54,22 @@ graphql-rest-proxy schema.graphql
 **STEP 3. Request!**
 
 ```
-curl -XPOST -H 'Content-Type: application/json' http://localhost:5252/graphql -d query='query {
-  getUsers {
-    id
-    name
-  }
-}'
+curl -XPOST -H 'Content-Type: application/json' \
+    -d '{ "query": "{ getUser { id name } }" }' \
+    http://localhost:5252/graphql
 ```
 
 It will return like this:
 
 ```
 {
-
-}
-curl -XPOST http://localhost:5252/graphql -d query='query {
-  getUsers {
-    id
-    name
+  "data": {
+    "getUser": {
+      "id": 1,
+      "name": "Tom"
+    }
   }
-}'
+}
 ```
 
 # Examples
@@ -81,19 +77,33 @@ curl -XPOST http://localhost:5252/graphql -d query='query {
 **Basic Query Proxy**
 
 ```graphql
-type Post {
+type User {
   id: Int
-  title: String
+  name: String
 }
 
 type Query {
-  id: Int
-  name: String
-  posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
+  getUser: User @proxy(get: "http://my-rest-api.com/user")
+  getUsers: [User] @proxy(get: "http://my-rest-api.com/users")
 }
 ```
 
-**Nest Object Reference ID**
+**Query With Parameters**
+
+You can refer the id of query args by `$id`.
+
+```graphql
+type User {
+  id: Int
+  name: String
+}
+
+type Query {
+  getUserById(id: Int!): User @proxy(get: "http://my-rest-api.com/users/$id")
+}
+```
+
+**Query Nested Object**
 
 You can refer the id of parent object by `$id`.
 
@@ -108,7 +118,13 @@ type User {
   name: String
   posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
 }
+
+type Query {
+  getUser: User @proxy(get: "http://my-rest-api.com/user")
+}
 ```
+
+# Notes
 
 **Request as less as possible**
 
@@ -177,14 +193,12 @@ You can also set a config file.
 
 ```javascript
 module.exports = {
-  // Base url.
-  // If this setting is enabled, you can set relative path like `@proxy(get: "/user")`
   baseUrl: 'https://myapi.com',
-
-  // Server listen port. Defualt to 5252.
   port: 3000,
 }
 ```
+
+And run
 
 ```sh
 graphql-rest-proxy --config proxy.config.js schema.graphql

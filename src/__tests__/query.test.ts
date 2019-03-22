@@ -19,7 +19,6 @@ describe('query', () => {
 
       type Query {
         getUser: User @proxy(get: "http://localhost:PORT/user")
-        getUserById(id: Int!): User @proxy(get: "http://localhost:PORT/users/$id")
         getUsers: [User] @proxy(get: "http://localhost:PORT/users")
       }
     `)
