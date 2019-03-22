@@ -5,7 +5,7 @@ import { terminate } from './mock-server'
 import { setConfig } from '../store'
 import getPort from 'get-port'
 
-describe('graphql-rest-proxy', () => {
+describe('with-config', () => {
   beforeAll(async () => {
     const port = await getPort()
     setConfig({

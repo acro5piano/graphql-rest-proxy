@@ -1,6 +1,7 @@
 import { Type } from './Type'
 import { InputObject } from './InputObject'
-import { GraphQLObjectType, GraphQLSchema } from 'graphql'
+import { GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql'
+// import { GraphQLInputObjectType } from 'graphql'
 import { Query } from './Query'
 import { add } from './typesProvider'
 
@@ -31,6 +32,27 @@ export class RootNode {
       add(type)
     })
 
+    return new GraphQLSchema({
+      query: this.getGraphQLQueryObject(),
+      mutation: this.getGraphQLMutationObject(),
+      // types: [UserInput],
+    })
+  }
+
+  private getGraphQLQueryObject() {
+    // graphql-js requires at least one query
+    if (this.queries.length === 0) {
+      return new GraphQLObjectType({
+        name: 'Query',
+        fields: {
+          ok: {
+            type: GraphQLString,
+            resolve: () => 'ok',
+          },
+        },
+      })
+    }
+
     const queries = this.queries.reduce((acc, cur) => {
       return {
         ...acc,
@@ -41,13 +63,31 @@ export class RootNode {
       }
     }, {})
 
-    const query = new GraphQLObjectType({
+    return new GraphQLObjectType({
       name: 'Query',
       fields: () => queries,
     })
+  }
 
-    return new GraphQLSchema({
-      query,
+  private getGraphQLMutationObject() {
+    if (this.mutations.length === 0) {
+      return undefined
+    }
+
+    const mutations = this.mutations.reduce((acc, cur) => {
+      return {
+        ...acc,
+        [cur.name]: {
+          type: this.getType(cur.returnTypeName).toGraphQLType(),
+          resolve: cur.resolver,
+          args: cur.getArgs(),
+        },
+      }
+    }, {})
+
+    return new GraphQLObjectType({
+      name: 'Mutation',
+      fields: () => mutations,
     })
   }
 

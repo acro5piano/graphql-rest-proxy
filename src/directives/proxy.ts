@@ -13,39 +13,50 @@ export function getProxyDirective(args: GraphQLArgument[]) {
   const method = methods[index]
   const baseUri = getDirectiveArgument(args, method)
 
-  const options = {
+  const getBaseOptions = () => ({
     uri: baseUri,
     method,
-    // qs: {
-    //   access_token: 'xxxxx xxxxx', // -> uri + '?access_token=xxxxx%20xxxxx'
-    // },
     headers: {
       'User-Agent': 'graphql-rest-proxy',
     },
-    json: true, // Automatically parses the JSON string in the response
-  }
+    body: {},
+    json: true,
+  })
 
-  return async function proxy(root: any, _args: any, { req }: Context, _all: any) {
-    const currentPath = _all.fieldNodes[0].name.value
-    if (currentPath in root) {
-      return root[currentPath]
+  return async function proxy(parent: any, args: any, { req }: Context, { fieldName }: any) {
+    if (fieldName in parent) {
+      return parent[fieldName]
     }
-    options.uri = buildUri(options.uri, root.id)
+    const options = getBaseOptions()
+    options.uri = buildUri(options.uri, parent.id, args.id)
     options.headers = {
       ...req.headers,
       ...options.headers,
     }
+
+    // Setting content-length may cause problem in proxy
+    delete (options.headers as any)['content-length']
+
+    options.body = args
     return rp(options)
   }
 }
 
-function buildUri(uri: string, id: any) {
-  const idReplaced = uri.replace(/$id/g, id)
+function buildUri(uri: string, parentId?: string | number, argId?: string | number) {
+  let builtUri = uri
+
+  if (parentId) {
+    builtUri = builtUri.replace('$id', String(parentId))
+  }
+  if (argId) {
+    builtUri = builtUri.replace('$id', String(argId))
+  }
+
   if (uri.startsWith('http')) {
-    return idReplaced
+    return builtUri
   }
   const { baseUrl } = getConfig()
-  return `${baseUrl}${idReplaced}`
+  return `${baseUrl}${builtUri}`
 }
 
 export function hasDirectiveArgument(args: GraphQLArgument[], argument: string) {
