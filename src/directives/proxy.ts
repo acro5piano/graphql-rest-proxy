@@ -24,8 +24,6 @@ export function getProxyDirective(args: GraphQLArgument[]) {
   })
 
   return async function proxy(parent: any, args: any, { req }: Context, { fieldName }: any) {
-    console.log(req.headers)
-
     if (fieldName in parent) {
       return parent[fieldName]
     }

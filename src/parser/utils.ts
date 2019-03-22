@@ -1,6 +1,8 @@
 import { GraphQLField } from './interface'
 import { getProxyDirective } from '../directives/proxy'
 import { GraphQLDirective } from './interface'
+import { Modifier } from './interface'
+import { GraphQLList, GraphQLNonNull } from 'graphql'
 
 export function getTypeName(field: GraphQLField): string {
   if (field.name) {
@@ -34,4 +36,18 @@ export function getReturnTypeAndModifiers(type: any) {
   }
   console.log(type.kind)
   throw new Error('cannnot get return type')
+}
+
+export function applyModifiers(type: any, modifiers: Modifier[]) {
+  const fns: any = []
+
+  if (modifiers.includes('list')) {
+    fns.push(GraphQLList)
+  }
+
+  if (modifiers.includes('nonnull')) {
+    fns.push(GraphQLNonNull)
+  }
+
+  return fns.reduce((acc: any, g: any) => g(acc), type)
 }

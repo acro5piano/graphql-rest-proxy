@@ -1,10 +1,12 @@
 import { GraphQLField, Modifier } from './interface'
 import { getDirectiveInitializer, getReturnTypeAndModifiers } from './utils'
 import { getStrict } from './typesProvider'
+import { applyModifiers } from './utils'
 
 export interface Argument {
   name: string
   typeName: string
+  modifiers: Modifier[]
 }
 
 export class Query {
@@ -42,7 +44,7 @@ export class Query {
       return {
         ...car,
         [cur.name]: {
-          type: inputType.toGraphQLType(),
+          type: applyModifiers(inputType.toGraphQLType(), cur.modifiers),
         },
       }
     }, {})
@@ -52,10 +54,11 @@ export class Query {
 export function parseQueryFromField(field: GraphQLField) {
   const [name, modifiers] = getReturnTypeAndModifiers(field.type)
   const args = field.arguments.map(arg => {
-    const [name] = getReturnTypeAndModifiers(arg.type)
+    const [name, modifiers] = getReturnTypeAndModifiers(arg.type)
     return {
       name: arg.name.value,
       typeName: name,
+      modifiers,
     }
   })
   const query = new Query(field.name.value, name, modifiers, args)

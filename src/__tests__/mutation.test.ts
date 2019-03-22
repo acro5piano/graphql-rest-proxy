@@ -7,12 +7,14 @@ describe('mutation', () => {
   beforeAll(async () => {
     await prepareTestWithSchema(gql`
       input UserInput {
-        name: String
+        name: String!
+        gender: String
       }
 
       type User {
         id: Int
         name: String
+        gender: String
       }
 
       type Mutation {

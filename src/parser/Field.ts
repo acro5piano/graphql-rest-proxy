@@ -1,12 +1,7 @@
-import {
-  GraphQLString,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLNonNull,
-  // GraphQLInputObjectType,
-} from 'graphql'
+import { GraphQLString, GraphQLInt } from 'graphql'
 import { get } from './typesProvider'
 import { Modifier } from './interface'
+import { applyModifiers } from './utils'
 
 export class Field {
   name: string
@@ -23,7 +18,7 @@ export class Field {
   toGraphQLField() {
     const obj = {
       [this.name]: {
-        type: this.getModifierFns().reduce((acc: any, g: any) => g(acc), this.getGraphQLType()),
+        type: applyModifiers(this.getGraphQLType(), this.modifiers),
         resolve: this.resolver,
       },
     }
@@ -35,20 +30,6 @@ export class Field {
 
   setResolver(resolver: any) {
     this.resolver = resolver
-  }
-
-  private getModifierFns() {
-    const fns: any = []
-
-    if (this.modifiers.includes('list')) {
-      fns.push(GraphQLList)
-    }
-
-    if (this.modifiers.includes('nonnull')) {
-      fns.push(GraphQLNonNull)
-    }
-
-    return fns
   }
 
   private getGraphQLType(): any {
