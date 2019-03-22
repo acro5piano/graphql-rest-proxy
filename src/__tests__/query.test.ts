@@ -3,7 +3,7 @@ import { server } from '../server'
 import { gql, prepareTestWithSchema } from './test-utils'
 import { terminate } from './mock-server'
 
-describe('graphql-rest-proxy', () => {
+describe('query', () => {
   beforeAll(async () => {
     await prepareTestWithSchema(gql`
       type Post {

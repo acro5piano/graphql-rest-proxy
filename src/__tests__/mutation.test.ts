@@ -3,37 +3,37 @@ import { server } from '../server'
 import { gql, prepareTestWithSchema } from './test-utils'
 import { terminate } from './mock-server'
 
-describe('with-child-embbed', () => {
+describe('mutation', () => {
   beforeAll(async () => {
     await prepareTestWithSchema(gql`
-      type Post {
-        id: Int
+      input UserInput {
+        name: String
       }
 
       type User {
         id: Int
-        posts: [Post] @proxy(get: "http://localhost:PORT/users/$id/posts")
+        name: String
       }
 
-      type Query {
-        getUser: User @proxy(get: "http://localhost:PORT/user_with_posts")
+      type Mutation {
+        createUser(user: UserInput!): User @proxy(post: "http://localhost:PORT/user")
+        updateUser(user: UserInput!): User @proxy(patch: "http://localhost:PORT/user")
+        deleteUser: User @proxy(delete: "http://localhost:PORT/user")
       }
     `)
   })
 
   afterAll(terminate)
 
-  it('do not request if response has the attribute', async () => {
+  it('can create', async () => {
     let res = await request(server)
       .post('/graphql')
       .send({
         query: gql`
-          query GetUser {
-            getUser {
+          query CreateUser {
+            createUser {
               id
-              posts {
-                id
-              }
+              name
             }
           }
         `,
@@ -41,13 +41,9 @@ describe('with-child-embbed', () => {
       .expect(200)
     expect(res.body).toEqual({
       data: {
-        getUser: {
+        createUser: {
           id: 1,
-          posts: [
-            {
-              id: 1,
-            },
-          ],
+          name: 'Kazuya',
         },
       },
     })
