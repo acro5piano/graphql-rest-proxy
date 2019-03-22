@@ -3,15 +3,7 @@ import { RootNode } from './RootNode'
 import { parseQueryFromField } from './Query'
 import { parseTypeFromField } from './Type'
 import { GraphQLTree, GraphQLField } from './interface'
-import {
-  GraphQLSchema,
-  // GraphQLObjectType,
-  // GraphQLString,
-  // GraphQLInt,
-  // GraphQLNonNull,
-  // GraphQLList,
-  // GraphQLInputObjectType,
-} from 'graphql'
+import { GraphQLSchema } from 'graphql'
 
 function isTypeDef(field: GraphQLField) {
   return !['Query', 'Mutation'].includes(field.name.value)
@@ -23,14 +15,15 @@ function buildSchema(schemaStructure: GraphQLTree): RootNode {
     .map(args => parseTypeFromField(args))
 
   const queryDef = schemaStructure.definitions.find(def => def.name.value === 'Query')
-  if (!queryDef) {
-    throw new Error('cannot find Query definition')
-  }
-  const queries = queryDef.fields.map(f => parseQueryFromField(f))
+  const queries = queryDef ? queryDef.fields.map(f => parseQueryFromField(f)) : []
+
+  const mutationDef = schemaStructure.definitions.find(def => def.name.value === 'Mutation')
+  const mutations = mutationDef ? mutationDef.fields.map(f => parseQueryFromField(f)) : []
 
   return new RootNode({
     types: typeDefs,
     queries,
+    mutations,
   } as any)
 }
 

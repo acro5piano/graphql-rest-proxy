@@ -19,8 +19,8 @@ describe('query', () => {
 
       type Query {
         getUser: User @proxy(get: "http://localhost:PORT/user")
+        getUserById(id: Int!): User @proxy(get: "http://localhost:PORT/users/$id")
         getUsers: [User] @proxy(get: "http://localhost:PORT/users")
-        createUser: User @proxy(post: "http://localhost:PORT/users")
       }
     `)
   })
@@ -70,30 +70,6 @@ describe('query', () => {
               id: 1,
             },
           ],
-        },
-      },
-    })
-  })
-
-  it('can post', async () => {
-    let res = await request(server)
-      .post('/graphql')
-      .send({
-        query: gql`
-          query CreateUser {
-            createUser {
-              id
-              name
-            }
-          }
-        `,
-      })
-      .expect(200)
-    expect(res.body).toEqual({
-      data: {
-        createUser: {
-          id: 1,
-          name: 'Kazuya',
         },
       },
     })
