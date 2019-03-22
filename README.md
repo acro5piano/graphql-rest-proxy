@@ -136,7 +136,7 @@ In this case, `posts` is embbed in response, so `graphql-rest-proxy` doesn't req
 CLI options are:
 
 ```
-Usage: index.bin.js <command> [options]
+Usage: graphql-rest-proxy <command> [options]
 
 Commands:
   index.bin.js <file>        Start graphql-rest-proxy server.          [default]
@@ -148,10 +148,6 @@ Options:
   -p, --port     Specify port
   -b, --baseUrl  Specify proxy base url
   -h, --help     Show help                                             [boolean]
-```
-
-```sh
-graphql-rest-proxy --config proxy.config.js schema.graphql
 ```
 
 You can also set a config file.
