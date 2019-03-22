@@ -2,7 +2,7 @@ import { GraphQLField } from './interface'
 import { getProxyDirective } from '../directives/proxy'
 import { GraphQLDirective } from './interface'
 import { Modifier } from './interface'
-import { GraphQLString, GraphQLInt, GraphQLList, GraphQLNonNull } from 'graphql'
+import { GraphQLString, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLBoolean } from 'graphql'
 import { get } from './typesProvider'
 
 export function getTypeName(field: GraphQLField): string {
@@ -61,6 +61,9 @@ export function getGraphQLType(type: string): any {
     case 'String':
     case 'String!':
       return GraphQLString
+    case 'Boolean':
+    case 'Boolean!':
+      return GraphQLBoolean
     default:
       const maybeType = get(type)
       if (!maybeType) {
