@@ -19,13 +19,12 @@ export function getProxyDirective(args: GraphQLArgument[]) {
     headers: {
       'User-Agent': 'graphql-rest-proxy',
     },
+    body: {},
     json: true,
   })
 
-  return async function proxy(parent: any, _args: any, { req }: Context, { fieldName }: any) {
-    // console.log(parent)
-    // console.log(_args)
-    // console.log(_all)
+  return async function proxy(parent: any, args: any, { req }: Context, { fieldName }: any) {
+    console.log(req.headers)
 
     if (fieldName in parent) {
       return parent[fieldName]
@@ -36,6 +35,11 @@ export function getProxyDirective(args: GraphQLArgument[]) {
       ...req.headers,
       ...options.headers,
     }
+
+    // Setting content-length may cause problem in proxy
+    delete (options.headers as any)['content-length']
+
+    options.body = args
     return rp(options)
   }
 }

@@ -8,6 +8,7 @@ app.use(bodyParser.json())
 app.use(require('cors')())
 
 app.use((req, _res, next) => {
+  console.log(req.body)
   console.log(`${req.method} ${req.url} ${JSON.stringify(req.body, undefined, 2)}`)
   next()
 })
