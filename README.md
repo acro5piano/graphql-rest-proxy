@@ -131,6 +131,27 @@ curl http://my-rest-api.com/user
 
 In this case, `posts` is embbed in response, so `graphql-rest-proxy` doesn't request to `http://my-rest-api.com/users/$id/posts`.
 
+# Configuration
+
+You can set a config file.
+
+`proxy.config.js`
+
+```javascript
+module.exports = {
+  // Base url.
+  // If this setting is enabled, you can set relative path like `@proxy(get: "/user")`
+  baseUrl: 'https://myapi.com',
+
+  // Server listen port. Defualt to 5252.
+  port: 3000,
+}
+```
+
+```
+graphql-rest-proxy -c examples/proxy.config.js
+```
+
 # Development Status
 
 Still in Beta.

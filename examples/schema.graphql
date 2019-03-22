@@ -10,7 +10,7 @@ type User {
 }
 
 type Query {
-  getUser: User @proxy(get: "http://localhost:5620/user")
-  getUsers: [User] @proxy(get: "http://localhost:5620/users")
-  createUser: User @proxy(post: "http://localhost:5620/users")
+  getUser: User @proxy(get: "/user")
+  getUsers: [User] @proxy(get: "/users")
+  createUser: User @proxy(post: "/users")
 }

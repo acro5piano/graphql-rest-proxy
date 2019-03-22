@@ -1,6 +1,12 @@
 import { GraphQLSchema } from 'graphql'
 
+interface Config {
+  baseUrl?: string
+  port?: number
+}
+
 const _schemaStore = new Map<string, GraphQLSchema>()
+let _config: Config = {}
 
 export function setSchema(schema: GraphQLSchema) {
   _schemaStore.set('schema', schema)
@@ -12,4 +18,12 @@ export function getSchema() {
     throw new Error('Schema is not initialized')
   }
   return schema
+}
+
+export function setConfig(config: Config) {
+  _config = { ..._config, ...config }
+}
+
+export function getConfig() {
+  return _config
 }
