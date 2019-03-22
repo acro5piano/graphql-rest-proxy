@@ -139,8 +139,8 @@ CLI options are:
 Usage: graphql-rest-proxy <command> [options]
 
 Commands:
-  index.bin.js <file>        Start graphql-rest-proxy server.          [default]
-  index.bin.js print <file>  Print GraphQL schema
+  graphql-rest-proxy <file>        Start graphql-rest-proxy server.          [default]
+  graphql-rest-proxy print <file>  Print GraphQL schema
 
 Options:
   --version      Show version number                                   [boolean]
