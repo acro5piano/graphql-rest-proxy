@@ -5,7 +5,7 @@ import yargs from 'yargs'
 import chalk from 'chalk'
 import { printSchema } from 'graphql'
 import { runserver } from './server'
-import { setSchema, setConfig } from './store'
+import { setSchema, setConfig, Config } from './store'
 import { parse } from './parser/parse'
 import { getVersion } from './version'
 
@@ -28,7 +28,13 @@ export async function run() {
           process.exit(2)
         }
         try {
-          const config = requireFromCwd(path)
+          const config: Config = requireFromCwd(path)
+          if (args.port) {
+            config.port = Number(args.port)
+          }
+          if (args.baseUrl) {
+            config.baseUrl = String(args.baseUrl)
+          }
           setConfig(config)
         } catch {
           console.log(chalk.yellow(`Cannot read config file: ${resolve(path)}`))
@@ -44,6 +50,7 @@ export async function run() {
     })
     .alias('c', 'config')
     .alias('p', 'port')
+    .alias('b', 'baseUrl')
     .help('h')
     .parse()
 }

@@ -1,6 +1,6 @@
 import { GraphQLSchema } from 'graphql'
 
-interface Config {
+export interface Config {
   baseUrl?: string
   port?: number
 }
