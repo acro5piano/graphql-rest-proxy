@@ -36,6 +36,7 @@ However, it requires a lot of effort to replace your current REST API with a bra
 type User {
   id: Int
   name: String
+  isActive: Boolean
 }
 
 type Query {
@@ -55,7 +56,7 @@ graphql-rest-proxy schema.graphql
 
 ```
 curl -XPOST -H 'Content-Type: application/json' \
-    -d '{ "query": "{ getUser { id name } }" }' \
+    -d '{ "query": "{ getUser { id name isActive } }" }' \
     http://localhost:5252/graphql
 ```
 
@@ -66,7 +67,8 @@ It will return like this:
   "data": {
     "getUser": {
       "id": 1,
-      "name": "Tom"
+      "name": "Tom",
+      "isActive": false
     }
   }
 }

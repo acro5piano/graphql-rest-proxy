@@ -12,8 +12,9 @@ describe('query', () => {
       }
 
       type User {
-        id: Int
+        id: Int!
         name: String
+        isActive: Boolean
         posts: [Post] @proxy(get: "http://localhost:PORT/users/$id/posts")
       }
 
@@ -44,7 +45,9 @@ describe('query', () => {
           query GetUser {
             getUser {
               __typename
+              id
               name
+              isActive
               posts {
                 __typename
                 id
@@ -58,7 +61,9 @@ describe('query', () => {
       data: {
         getUser: {
           __typename: 'User',
+          id: 1,
           name: 'Kazuya',
+          isActive: true,
           posts: [
             {
               __typename: 'Post',

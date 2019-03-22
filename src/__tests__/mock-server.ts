@@ -15,6 +15,7 @@ app.use((req, _res, next) => {
 const userMock = {
   id: 1,
   name: 'Kazuya',
+  isActive: true,
 }
 
 const postMock = {
