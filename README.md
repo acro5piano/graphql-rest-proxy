@@ -24,7 +24,7 @@ We all know GraphQL is great, so you want to move from REST API to GraphQL.
 
 However, it requires a lot of effort to replace your current REST API with a brand new GraphQL server.
 
-`graphql-rest-proxy` comes in to address this issues. It proxies GraphQL to REST API according to the defined schema.
+`graphql-rest-proxy` comes in to address this issue. It proxies GraphQL to REST API according to the defined schema.
 
 # Getting Started
 
