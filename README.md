@@ -133,7 +133,28 @@ In this case, `posts` is embbed in response, so `graphql-rest-proxy` doesn't req
 
 # Configuration
 
-You can set a config file.
+CLI options are:
+
+```
+Usage: index.bin.js <command> [options]
+
+Commands:
+  index.bin.js <file>        Start graphql-rest-proxy server.          [default]
+  index.bin.js print <file>  Print GraphQL schema
+
+Options:
+  --version      Show version number                                   [boolean]
+  -c, --config   Specify config file
+  -p, --port     Specify port
+  -b, --baseUrl  Specify proxy base url
+  -h, --help     Show help                                             [boolean]
+```
+
+```sh
+graphql-rest-proxy --config proxy.config.js schema.graphql
+```
+
+You can also set a config file.
 
 `proxy.config.js`
 
@@ -148,8 +169,8 @@ module.exports = {
 }
 ```
 
-```
-graphql-rest-proxy -c examples/proxy.config.js
+```sh
+graphql-rest-proxy --config proxy.config.js schema.graphql
 ```
 
 # Development Status

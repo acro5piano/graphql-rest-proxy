@@ -53,9 +53,13 @@ export async function run() {
       console.log(printSchema(schema))
     })
     .alias('c', 'config')
+    .describe('c', 'Specify config file')
     .alias('p', 'port')
+    .describe('p', 'Specify port')
     .alias('b', 'baseUrl')
+    .describe('b', 'Specify proxy base url')
     .help('h')
+    .alias('h', 'help')
     .parse()
 }
 
