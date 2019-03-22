@@ -26,26 +26,20 @@ However, it requires a lot of effort to replace your current REST API with a bra
 
 `graphql-rest-proxy` comes in to address this issues. It proxies GraphQL to REST API according to the defined schema.
 
-# Usage
+# Getting Started
 
 **STEP 1. Define your schema.**
 
 `schema.graphql`
 
 ```graphql
-type Post {
-  id: Int
-  title: String
-}
-
 type User {
   id: Int
   name: String
-  posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
 }
 
 type Query {
-  getUser: User @proxy(get: "http://my-rest-api.com/user")
+  getUsers: [User] @proxy(get: "http://my-rest-api.com/users")
 }
 ```
 
@@ -60,19 +54,46 @@ graphql-rest-proxy schema.graphql
 **STEP 3. Request!**
 
 ```
-curl -XPOST http://localhost:5252/graphql -d query='query {
-  getUser {
+curl -XPOST -H 'Content-Type: application/json' http://localhost:5252/graphql -d query='query {
+  getUsers {
     id
-    posts {
-      id
-    }
+    name
   }
 }'
 ```
 
-# Features
+It will return like this:
 
-**Reference ID**
+```
+{
+
+}
+curl -XPOST http://localhost:5252/graphql -d query='query {
+  getUsers {
+    id
+    name
+  }
+}'
+```
+
+# Examples
+
+**Basic Query Proxy**
+
+```graphql
+type Post {
+  id: Int
+  title: String
+}
+
+type Query {
+  id: Int
+  name: String
+  posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
+}
+```
+
+**Nest Object Reference ID**
 
 You can refer the id of parent object by `$id`.
 

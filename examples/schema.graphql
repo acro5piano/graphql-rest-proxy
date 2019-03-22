@@ -3,6 +3,10 @@ type Post {
   title: String
 }
 
+input UserInput {
+  name: String
+}
+
 type User {
   id: Int
   name: String
@@ -12,5 +16,8 @@ type User {
 type Query {
   getUser: User @proxy(get: "/user")
   getUsers: [User] @proxy(get: "/users")
-  createUser: User @proxy(post: "/users")
+}
+
+type Mutation {
+  createUser(user: UserInput): User @proxy(post: "/users")
 }
