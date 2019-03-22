@@ -5,7 +5,7 @@ import yargs from 'yargs'
 import chalk from 'chalk'
 import { printSchema } from 'graphql'
 import { runserver } from './server'
-import { setSchema, setConfig, Config } from './store'
+import { setSchema, setConfig, getConfig, Config } from './store'
 import { parse } from './parser/parse'
 import { getVersion } from './version'
 
@@ -29,18 +29,22 @@ export async function run() {
         }
         try {
           const config: Config = requireFromCwd(path)
-          if (args.port) {
-            config.port = Number(args.port)
-          }
-          if (args.baseUrl) {
-            config.baseUrl = String(args.baseUrl)
-          }
           setConfig(config)
         } catch {
           console.log(chalk.yellow(`Cannot read config file: ${resolve(path)}`))
           process.exit(2)
         }
       }
+
+      // CLI option is prior to file config
+      const config = getConfig()
+      if (args.port) {
+        config.port = Number(args.port)
+      }
+      if (args.baseUrl) {
+        config.baseUrl = String(args.baseUrl)
+      }
+      setConfig(config)
       await initSchema(args.file as string)
       runserver()
     })
