@@ -1,29 +1,40 @@
 import { Field } from './Field'
 import { GraphQLField } from './interface'
 import { getTypeName } from './utils'
-import { GraphQLObjectType } from 'graphql'
+import { GraphQLObjectType, GraphQLInputObjectType } from 'graphql'
 import { getDirectiveInitializer, getReturnTypeAndModifiers } from './utils'
 
 export class Type {
   name: string
   fields: Field[]
-  compiled?: GraphQLObjectType = undefined
+  compiled?: GraphQLObjectType | GraphQLInputObjectType = undefined
+  isInputType: boolean = false
 
-  constructor(name: string, fields: Field[]) {
+  constructor(name: string, fields: Field[], isInputType: boolean) {
     this.name = name
     this.fields = fields
+    this.isInputType = isInputType
   }
 
   toGraphQLType() {
     if (this.compiled) {
       return this.compiled
     }
-    const type = new GraphQLObjectType({
-      name: this.name,
-      fields: this.getGraphQLField(),
-    })
-    this.compiled = type
-    return type
+    if (this.isInputType) {
+      const type = new GraphQLInputObjectType({
+        name: this.name,
+        fields: this.getGraphQLField(),
+      })
+      this.compiled = type
+      return type
+    } else {
+      const type = new GraphQLObjectType({
+        name: this.name,
+        fields: this.getGraphQLField(),
+      })
+      this.compiled = type
+      return type
+    }
   }
 
   private getGraphQLField(): any {
@@ -48,5 +59,5 @@ export function parseTypeFromField(field: GraphQLField) {
     })
     return createdField
   })
-  return new Type(getTypeName(field), fields)
+  return new Type(getTypeName(field), fields, field.kind === 'InputObjectTypeDefinition')
 }

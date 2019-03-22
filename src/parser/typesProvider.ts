@@ -7,6 +7,14 @@ export function get(typeName: string) {
   return type
 }
 
+export function getStrict(typeName: string) {
+  const type = get(typeName)
+  if (!type) {
+    throw new Error('type not found')
+  }
+  return type
+}
+
 export function add(type: Type) {
   types.push(type)
 }

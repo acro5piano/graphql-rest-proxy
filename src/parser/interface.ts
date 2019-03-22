@@ -32,7 +32,7 @@ export type GraphQLKind =
   | 'InputObjectTypeDefinition'
 
 export interface GraphQLField {
-  kind: 'FieldDefinition' | 'InputValueDefinition'
+  kind: GraphQLKind
   type: GraphQLType
   directives: GraphQLDirective[]
   arguments: GraphQLArgument[]

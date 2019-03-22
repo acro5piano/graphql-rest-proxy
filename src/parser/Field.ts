@@ -21,12 +21,16 @@ export class Field {
   }
 
   toGraphQLField() {
-    return {
+    const obj = {
       [this.name]: {
         type: this.getModifierFns().reduce((acc: any, g: any) => g(acc), this.getGraphQLType()),
         resolve: this.resolver,
       },
     }
+    if (!this.resolver) {
+      delete obj[this.name].resolve
+    }
+    return obj
   }
 
   setResolver(resolver: any) {

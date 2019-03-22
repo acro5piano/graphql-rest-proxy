@@ -32,28 +32,9 @@ export class RootNode {
       add(type)
     })
 
-    const mutations = this.mutations.reduce((acc, cur) => {
-      return {
-        ...acc,
-        [cur.name]: {
-          type: this.getType(cur.returnTypeName).toGraphQLType(),
-          resolve: cur.resolver,
-          args: cur.getArgs(),
-        },
-      }
-    }, {})
-
-    const mutation =
-      this.mutations.length === 0
-        ? undefined
-        : new GraphQLObjectType({
-            name: 'Mutation',
-            fields: () => mutations,
-          })
-
     return new GraphQLSchema({
       query: this.getGraphQLQueryObject(),
-      mutation,
+      mutation: this.getGraphQLMutationObject(),
       // types: [UserInput],
     })
   }
@@ -61,7 +42,7 @@ export class RootNode {
   private getGraphQLQueryObject() {
     // graphql-js requires at least one query
     if (this.queries.length === 0) {
-      new GraphQLObjectType({
+      return new GraphQLObjectType({
         name: 'Query',
         fields: {
           ok: {
@@ -85,6 +66,28 @@ export class RootNode {
     return new GraphQLObjectType({
       name: 'Query',
       fields: () => queries,
+    })
+  }
+
+  private getGraphQLMutationObject() {
+    if (this.mutations.length === 0) {
+      return undefined
+    }
+
+    const mutations = this.mutations.reduce((acc, cur) => {
+      return {
+        ...acc,
+        [cur.name]: {
+          type: this.getType(cur.returnTypeName).toGraphQLType(),
+          resolve: cur.resolver,
+          args: cur.getArgs(),
+        },
+      }
+    }, {})
+
+    return new GraphQLObjectType({
+      name: 'Mutation',
+      fields: () => mutations,
     })
   }
 
