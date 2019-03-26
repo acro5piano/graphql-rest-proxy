@@ -28,6 +28,8 @@ However, it requires a lot of effort to replace your current REST API with a bra
 
 `graphql-rest-proxy` comes in to address this issue. It proxies GraphQL to REST API according to the defined schema.
 
+![image](images/how-it-works.png)
+
 # Getting Started
 
 **STEP 1. Define your schema.**
