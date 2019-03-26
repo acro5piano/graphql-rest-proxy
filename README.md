@@ -2,6 +2,8 @@
 [![CircleCI](https://circleci.com/gh/acro5piano/graphql-rest-proxy.svg?style=svg)](https://circleci.com/gh/acro5piano/graphql-rest-proxy)
 [![codecov](https://codecov.io/gh/acro5piano/graphql-rest-proxy/branch/master/graph/badge.svg)](https://codecov.io/gh/acro5piano/graphql-rest-proxy)
 
+![image](images/logo.png)
+
 # graphql-rest-proxy
 
 Convert your REST server to GraphQL server.
