@@ -40,7 +40,7 @@ type User {
 }
 
 type Query {
-  getUser: User @proxy(get: "http://my-rest-api.com/user")
+  getUser: User @proxy(get: "https://my-rest-api.com/user")
 }
 ```
 
@@ -85,8 +85,8 @@ type User {
 }
 
 type Query {
-  getUser: User @proxy(get: "http://my-rest-api.com/user")
-  getUsers: [User] @proxy(get: "http://my-rest-api.com/users")
+  getUser: User @proxy(get: "https://my-rest-api.com/user")
+  getUsers: [User] @proxy(get: "https://my-rest-api.com/users")
 }
 ```
 
@@ -101,7 +101,7 @@ type User {
 }
 
 type Query {
-  getUserById(id: Int!): User @proxy(get: "http://my-rest-api.com/users/$id")
+  getUserById(id: Int!): User @proxy(get: "https://my-rest-api.com/users/$id")
 }
 ```
 
@@ -120,8 +120,8 @@ type User {
 }
 
 type Mutation {
-  createUser(user: UserInput!): User @proxy(post: "http://my-rest-api.com/users")
-  updateUser(id: Int!, user: UserInput!): User @proxy(patch: "http://my-rest-api.com/users/$id")
+  createUser(user: UserInput!): User @proxy(post: "https://my-rest-api.com/users")
+  updateUser(id: Int!, user: UserInput!): User @proxy(patch: "https://my-rest-api.com/users/$id")
 }
 ```
 
@@ -152,7 +152,7 @@ fetch('http://localhost:5252/graphql', {
 })
 ```
 
-**Query Nested Object**
+**Nested Objects**
 
 You can refer the id of parent object by `$id`.
 
@@ -165,57 +165,27 @@ type Post {
 type User {
   id: Int
   name: String
-  posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
+  posts: [Post] @proxy(get: "https://my-rest-api.com/users/$id/posts")
 }
 
 type Query {
-  getUser: User @proxy(get: "http://my-rest-api.com/user")
+  getUser: User @proxy(get: "https://my-rest-api.com/user")
 }
 ```
 
-# Notes
+**Specify base url**
 
-**Request as less as possible**
-
-`graphql-rest-proxy` does not request if proxy response includes child object. This means you can reduce API call if you includes child object.
-
-For example, if the schema is like this:
-
-```graphql
-type Post {
-  id: Int
-  title: String
-}
-
-type User {
-  id: Int
-  name: String
-  posts: [Post] @proxy(get: "http://my-rest-api.com/users/$id/posts")
-}
-
-type Query {
-  getUser: User @proxy(get: "http://my-rest-api.com/user")
-}
-```
-
-And REST API returns like this:
+You can set base url to reduce verbosity:
 
 ```sh
-curl http://my-rest-api.com/user
+graphql-rest-proxy --baseUrl https://my-rest-api.com schema.graphql
 ```
 
-```json
-{
-  "id": 1,
-  "name": "acro5piano",
-  "posts": {
-    "id": 1,
-    "title": "graphql-rest-proxy"
-  }
+```graphql
+type Query {
+  getUser: User @proxy(get: "/user")
 }
 ```
-
-In this case, `posts` is embbed in response, so `graphql-rest-proxy` doesn't request to `http://my-rest-api.com/users/$id/posts`.
 
 # Configuration
 
@@ -247,11 +217,55 @@ module.exports = {
 }
 ```
 
-And run
+And run with the configuration:
 
 ```sh
 graphql-rest-proxy --config proxy.config.js schema.graphql
 ```
+
+# Notes
+
+**Request as less as possible**
+
+`graphql-rest-proxy` does not request if proxy response includes child object. This means you can reduce API call if you includes child object.
+
+For example, if the schema is like this:
+
+```graphql
+type Post {
+  id: Int
+  title: String
+}
+
+type User {
+  id: Int
+  name: String
+  posts: [Post] @proxy(get: "https://my-rest-api.com/users/$id/posts")
+}
+
+type Query {
+  getUser: User @proxy(get: "https://my-rest-api.com/user")
+}
+```
+
+And REST API returns like this:
+
+```sh
+curl https://my-rest-api.com/user
+```
+
+```json
+{
+  "id": 1,
+  "name": "acro5piano",
+  "posts": {
+    "id": 1,
+    "title": "graphql-rest-proxy"
+  }
+}
+```
+
+In this case, `posts` is embbed in response, so `graphql-rest-proxy` doesn't request to `https://my-rest-api.com/users/1/posts`.
 
 # Development Status
 
