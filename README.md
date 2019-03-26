@@ -271,7 +271,7 @@ In this case, `posts` is embbed in response, so `graphql-rest-proxy` doesn't req
 
 # Development Status
 
-Still in Beta. If you have any suggestions or feature requests, feel free to open an issue!
+Still in Beta. If you have any suggestions or feature requests, feel free to open new issues or Pull Requests!
 
 TODO:
 
