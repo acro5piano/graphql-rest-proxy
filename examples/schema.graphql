@@ -14,8 +14,7 @@ type User {
 }
 
 type Query {
-  getUser: User @proxy(get: "/user")
-  getUsers: [User] @proxy(get: "/users")
+  users: [User] @proxy(get: "/users")
 }
 
 type Mutation {

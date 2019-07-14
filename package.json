@@ -26,6 +26,8 @@
     "publish": "node ./node_modules/.bin/pack publish",
     "clean": "rm -rf dist/*",
     "build": "pack build",
+    "try": "npm-run-all --parallel mock try:proxy",
+    "try:proxy": "npm run ts-run ./src/index.ts -c examples/proxy.config.js examples/schema.graphql",
     "test": "cross-env NODE_ENV=testing jest",
     "test:coverage": "cross-env NODE_ENV=testing jest --coverage"
   },
