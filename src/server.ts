@@ -26,6 +26,6 @@ server.get('/ok', (_req, res) => {
 export async function runserver() {
   const port = process.env.PORT || getConfig().port || 5252
   server.listen(port, () => {
-    console.log(`graphql-rest-proxy is running on http://localhost:${port}`)
+    console.log(`graphql-rest-proxy is running on http://localhost:${port}/graphql`)
   })
 }
