@@ -1,0 +1,9 @@
+**node_modules**
+examples
+jest.config.js
+coverage
+images
+.circleci
+*.log
+prettier.config.js
+nodemon.json
