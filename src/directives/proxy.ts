@@ -37,6 +37,9 @@ export function getProxyDirective(args: GraphQLArgument[]) {
     // Setting content-length may cause problem in proxy
     delete (options.headers as any)['content-length']
 
+    // The incoming host is reset to be able to send cross-domain requests
+    delete (options.headers as any)['host']
+
     options.body = args
     return rp(options)
   }
