@@ -28,5 +28,5 @@ function buildSchema(schemaStructure: GraphQLTree): RootNode {
 }
 
 export function parse(schema: string): GraphQLSchema {
-  return buildSchema(graphql(schema)).toGraphQLSchema()
+  return buildSchema(graphql(schema as any) as any).toGraphQLSchema()
 }
