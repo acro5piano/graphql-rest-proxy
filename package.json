@@ -37,7 +37,7 @@
     "commander": "^2.19.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "graphql": "^14.1.1",
+    "graphql": "^15.3.0",
     "graphql-tag": "^2.10.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
