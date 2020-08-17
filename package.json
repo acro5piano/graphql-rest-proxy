@@ -1,11 +1,14 @@
 {
   "name": "graphql-rest-proxy",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "description": "Turn your REST API into GraphQL - A Proxy Server that pipes request from GraphQL to REST with GraphQL DSL, performant nested children, mutations, input types, and more.",
   "main": "dist/index.js",
   "repository": "git@github.com:acro5piano/graphql-rest-proxy",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
+  "bin": {
+    "graphql-rest-proxy": "./bin/graphql-rest-proxy.js"
+  },
   "keywords": [
     "cli-app",
     "expressjs",
@@ -23,9 +26,9 @@
     "dev": "nodemon",
     "mock": "npm run ts-run src/__tests__/run-mock-server.ts",
     "prepublish": "npm-run-all clean build",
-    "publish": "node ./node_modules/.bin/pack publish",
+    "release": "node ./node_modules/.bin/pack publish",
     "clean": "rm -rf dist/*",
-    "build": "pack build",
+    "build": "rollup -c",
     "try": "npm-run-all --parallel mock try:proxy",
     "try:proxy": "npm run ts-run ./src/index.ts -c examples/proxy.config.js examples/schema.graphql",
     "test": "cross-env NODE_ENV=testing jest",
@@ -45,10 +48,6 @@
     "yargs": "^15.4.1"
   },
   "devDependencies": {
-    "@pika/pack": "^0.3.5",
-    "@pika/plugin-build-node": "^0.9.2",
-    "@pika/plugin-simple-bin": "^0.9.2",
-    "@pika/plugin-ts-standard-pkg": "^0.3.14",
     "@types/body-parser": "^1.17.0",
     "@types/chalk": "^2.2.0",
     "@types/express": "^4.16.1",
@@ -67,10 +66,13 @@
     "nodemon": "^2.0.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.16.4",
+    "rollup": "^2.23.0",
+    "rollup-plugin-typescript2": "^0.27.1",
     "supertest": "^4.0.2",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.3",
     "tsconfig-paths": "^3.8.0",
+    "tslib": "^2.0.1",
     "typescript": "^3.3.4000"
   },
   "@pika/pack": {
