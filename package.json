@@ -26,7 +26,6 @@
     "dev": "nodemon",
     "mock": "npm run ts-run src/__tests__/run-mock-server.ts",
     "prepublish": "npm-run-all clean build",
-    "release": "node ./node_modules/.bin/pack publish",
     "clean": "rm -rf dist/*",
     "build": "rollup -c",
     "try": "npm-run-all --parallel mock try:proxy",
