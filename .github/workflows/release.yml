@@ -21,6 +21,6 @@ jobs:
           test -n "$NPM_TOKEN"
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
           yarn install
-          npm run publish
+          npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
