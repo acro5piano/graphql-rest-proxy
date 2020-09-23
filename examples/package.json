@@ -14,6 +14,7 @@
     "graphql-rest-proxy": "^0.4.1"
   },
   "devDependencies": {
-    "concurrently": "^4.1.1"
+    "concurrently": "^4.1.1",
+    "faker": "^5.1.0"
   }
 }

@@ -1,4 +1,5 @@
 const express = require('express')
+const faker = require('faker')
 const bodyParser = require('body-parser')
 
 const app = express()
@@ -12,35 +13,35 @@ app.use((req, _res, next) => {
   next()
 })
 
-const userMock = {
-  id: 1,
-  name: 'Kazuya',
+const userMock = (id) => ({
+  id,
+  name: faker.name.firstName(),
   isActive: true,
-}
+})
 
-const postMock = {
-  id: 1,
-  title: 'A post',
-}
+const postMock = (id) => ({
+  id,
+  title: faker.lorem.words(),
+})
 
 app.get('/users/:id', (_req, res) => {
-  res.send(userMock)
+  res.send(userMock(1))
 })
 
 app.get('/users', (_req, res) => {
-  res.send([userMock, userMock])
+  res.send([userMock(1), userMock(2)])
 })
 
 app.get('/users/:id/posts', (_req, res) => {
-  res.send([postMock, postMock])
+  res.send([postMock(1), postMock(2)])
 })
 
 app.post('/users', (_req, res) => {
-  res.send(userMock)
+  res.send(userMock(1))
 })
 
 app.patch('/users/:id', (_req, res) => {
-  res.send(userMock)
+  res.send(userMock(1))
 })
 
 app.listen(5620)
