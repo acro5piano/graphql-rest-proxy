@@ -115,7 +115,7 @@ type Query {
 Mutation forward `variables` to the REST API.
 
 ```graphql
-type UserInput {
+input UserInput {
   name: String!
 }
 
