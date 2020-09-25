@@ -18,6 +18,6 @@ jobs:
             node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - run: |
-        yarn tsc
-        yarn test:coverage
-        yarn codecov -t $CODECOV_TOKEN
+          yarn tsc
+          yarn test:coverage
+          yarn codecov -t $CODECOV_TOKEN
