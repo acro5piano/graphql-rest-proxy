@@ -1,6 +1,6 @@
+![test](https://github.com/acro5piano/graphql-rest-proxy/workflows/test/badge.svg)
 ![release](https://github.com/acro5piano/graphql-rest-proxy/workflows/release/badge.svg)
 [![npm version](https://badge.fury.io/js/graphql-rest-proxy.svg)](https://badge.fury.io/js/graphql-rest-proxy)
-[![CircleCI](https://circleci.com/gh/acro5piano/graphql-rest-proxy.svg?style=svg)](https://circleci.com/gh/acro5piano/graphql-rest-proxy)
 [![codecov](https://codecov.io/gh/acro5piano/graphql-rest-proxy/branch/master/graph/badge.svg)](https://codecov.io/gh/acro5piano/graphql-rest-proxy)
 
 ![image](images/logo.png)
