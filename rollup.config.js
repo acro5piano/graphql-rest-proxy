@@ -13,7 +13,7 @@ export default {
     {
       file: 'dist/index.js',
       format: 'cjs',
-      name: 'typed-graphqlify',
+      name: 'graphql-rest-proxy',
       sourcemap: true,
     },
     {
