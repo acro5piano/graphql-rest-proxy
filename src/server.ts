@@ -1,20 +1,24 @@
 import express from 'express'
-import bodyParser from 'body-parser'
 import { graphql } from 'graphql'
 import { getSchema, getConfig } from './store'
 
 export const server = express()
 
-server.use(bodyParser.urlencoded({ extended: true }))
-server.use(bodyParser.json())
+server.use(express.json())
 server.use(require('cors')())
 
 server.post('/graphql', (req, res) => {
-  graphql(getSchema(), req.body.query, {}, { req, res }, req.body.variables)
-    .then(result => {
+  graphql({
+    schema: getSchema(),
+    source: req.body.query,
+    rootValue: {},
+    contextValue: { req, res },
+    variableValues: req.body.variables,
+  })
+    .then((result) => {
       res.send(result)
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(422).send(err)
     })
 })
