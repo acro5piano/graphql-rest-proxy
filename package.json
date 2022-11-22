@@ -21,10 +21,10 @@
     "typescript"
   ],
   "files": [
-    "bin/*.js",
-    "dist/*.js",
-    "dist/*.map",
-    "dist/*.ts",
+    "bin/**/*.js",
+    "dist/**/*.js",
+    "dist/**/*.map",
+    "dist/**/*.ts",
     "package.json",
     "LICENSE",
     "README.md"
