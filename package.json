@@ -20,75 +20,59 @@
     "rest-api",
     "typescript"
   ],
+  "files": [
+    "bin/*.js",
+    "dist/*.js",
+    "dist/*.map",
+    "dist/*.ts",
+    "package.json",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "start": "npm run ts-run ./src/index.ts",
-    "ts-run": "ts-node -T -r tsconfig-paths/register --project tsconfig.dev.json",
+    "ts-run": "node -r esbuild-register",
     "dev": "nodemon",
-    "mock": "npm run ts-run src/__tests__/run-mock-server.ts",
     "prepublish": "npm-run-all clean build",
-    "clean": "rm -rf dist/*",
-    "build": "rollup -c",
+    "clean": "rimraf dist/*",
+    "build": "tsc -p tsconfig.prod.json",
     "try": "npm-run-all --parallel mock try:proxy",
-    "try:proxy": "npm run ts-run ./src/index.ts -c examples/proxy.config.js examples/schema.graphql",
-    "test": "cross-env NODE_ENV=testing jest",
-    "test:coverage": "cross-env NODE_ENV=testing jest --coverage"
+    "try:proxy": "yarn ts-run ./src/cli-runner.ts -- -c examples/proxy.config.js examples/schema.graphql",
+    "mock": "npm run ts-run tests/run-mock-server.ts",
+    "test": "ava",
+    "test:coverage": "c8 ava"
   },
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "chalk": "^4.1.0",
-    "commander": "^7.1.0",
+    "chalk": "^5.1.2",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
-    "graphql": "^15.3.0",
-    "graphql-tag": "^2.10.1",
+    "express": "^4.18.2",
+    "graphql": "^15.8.0",
+    "graphql-tag": "^2.12.6",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "uuid": "^8.3.0",
-    "yargs": "^16.0.3"
+    "uuid": "^9.0.0",
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
-    "@types/body-parser": "^1.17.0",
     "@types/chalk": "^2.2.0",
     "@types/express": "^4.16.1",
-    "@types/get-port": "^4.0.1",
     "@types/graphql": "^14.0.7",
-    "@types/jest": "^26.0.10",
     "@types/node": "^15.6.1",
     "@types/request": "^2.48.1",
     "@types/request-promise": "^4.1.42",
     "@types/supertest": "^2.0.7",
-    "@types/uuid": "^8.3.0",
+    "@types/uuid": "^8.3.4",
+    "@types/yargs": "^17.0.13",
+    "ava": "^5.1.0",
+    "c8": "^7.12.0",
     "codecov": "^3.2.0",
-    "cross-env": "^7.0.2",
-    "get-port": "^5.1.1",
-    "jest": "^24.5.0",
+    "esbuild": "^0.15.15",
+    "esbuild-register": "^3.4.1",
+    "get-port": "^6.1.2",
     "nodemon": "^2.0.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
-    "rollup": "^2.23.0",
-    "rollup-plugin-typescript2": "^0.30.0",
     "supertest": "^6.1.3",
-    "ts-jest": "^24.0.0",
-    "ts-node": "^9.0.0",
-    "tsconfig-paths": "^3.8.0",
-    "tslib": "^2.0.1",
     "typescript": "^4.0.2"
-  },
-  "@pika/pack": {
-    "pipeline": [
-      [
-        "@pika/plugin-ts-standard-pkg"
-      ],
-      [
-        "@pika/plugin-build-node"
-      ],
-      [
-        "@pika/plugin-simple-bin",
-        {
-          "bin": "graphql-rest-proxy",
-          "minNodeVersion": 8
-        }
-      ]
-    ]
   }
 }

@@ -2,17 +2,20 @@ name: test
 
 on:
   push: {}
-  pull_request:
-    types: [created, synchronize]
 
 jobs:
   test:
+    strategy:
+      matrix:
+        node-version:
+          - 16.x
+          - 18.x
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: {{ matrix.node-version }}
       - uses: actions/cache@master
         with:
           path: |
