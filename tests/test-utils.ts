@@ -1,7 +1,6 @@
 import { start } from './mock-server'
 import getPort from 'get-port'
-import { parse } from '../parser/parse'
-import { setSchema } from '../store'
+import { parse, setSchema } from '../src'
 
 export function gql(literals: TemplateStringsArray) {
   return literals[0]
