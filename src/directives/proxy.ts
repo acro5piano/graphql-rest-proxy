@@ -48,7 +48,7 @@ export function getProxyDirective(args: GraphQLArgument[]) {
 function buildUri(uri: string, parent?: any, args?: any) {
   let builtUri = uri
 
-  let env = Object.assign(parent, args);
+  const parentWithArgs = Object.assign(parent, args);
   if (env) {
       let temparr = builtUri.split('/');
       temparr.forEach((item, index) => {
