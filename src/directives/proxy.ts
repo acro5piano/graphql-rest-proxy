@@ -49,11 +49,11 @@ function buildUri(uri: string, parent?: any, args?: any) {
   let builtUri = uri
 
   const parentWithArgs = Object.assign(parent, args);
-  if (env) {
+  if (parentWithArgs) {
       let temparr = builtUri.split('/');
       temparr.forEach((item, index) => {
           if (item.includes('$')) {
-              temparr[index] = String(env[item.replace('$', '')]);
+              temparr[index] = String(parentWithArgs[item.replace('$', '')]);
           }
       });
       builtUri = temparr.join('/');
