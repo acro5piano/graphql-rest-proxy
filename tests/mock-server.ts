@@ -59,6 +59,11 @@ let server: any
 
 export function start(port = 5620) {
   server = app.listen(port, () => {})
+  console.log(`Listeing on http://localhost:${port}`)
+  console.log(`  - http://localhost:${port}/user`)
+  console.log(`  - http://localhost:${port}/users/1`)
+  console.log(`  - http://localhost:${port}/users/1/posts`)
+  console.log(`  - http://localhost:${port}/user_with_posts`)
 }
 
 export function terminate() {
