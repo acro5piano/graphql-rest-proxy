@@ -1,6 +1,6 @@
 {
   "name": "graphql-rest-proxy",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "Turn your REST API into GraphQL - A Proxy Server that pipes request from GraphQL to REST with GraphQL DSL, performant nested children, mutations, input types, and more.",
   "main": "dist/index.js",
   "repository": "git@github.com:acro5piano/graphql-rest-proxy",
