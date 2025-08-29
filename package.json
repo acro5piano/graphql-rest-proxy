@@ -50,6 +50,7 @@
     "graphql-tag": "^2.12.6",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
+    "ruru": "^2.0.0-beta.29",
     "uuid": "^9.0.0",
     "yargs": "^17.6.2"
   },
