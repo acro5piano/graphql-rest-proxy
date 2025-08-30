@@ -3,6 +3,7 @@ import { GraphQLSchema } from 'graphql'
 export interface Config {
   baseUrl?: string
   port?: number
+  graphiql?: boolean
 }
 
 const _schemaStore = new Map<string, GraphQLSchema>()
