@@ -1,5 +1,4 @@
 import { start } from './mock-server'
-import getPort from 'get-port'
 import { parse, setSchema } from '../src'
 
 export function gql(literals: TemplateStringsArray) {
@@ -11,4 +10,9 @@ export async function prepareTestWithSchema(schemaString: string, givenPort?: nu
   const schema = parse(schemaString.replace(/PORT/g, String(port)))
   setSchema(schema)
   await start(port)
+}
+
+export async function getPort() {
+  const { default: getPortImport } = await import('get-port')
+  return getPortImport()
 }

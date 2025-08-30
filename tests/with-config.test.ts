@@ -3,7 +3,7 @@ import { server } from '../src'
 import { gql, prepareTestWithSchema } from './test-utils'
 import { terminate } from './mock-server'
 import { setConfig } from '../src'
-import getPort from 'get-port'
+import { getPort } from './test-utils'
 import test from 'ava'
 
 test.before(async () => {

@@ -3,7 +3,7 @@ import { server } from '../src'
 import { gql, prepareTestWithSchema } from './test-utils'
 import { terminate } from './mock-server'
 import { setConfig } from '../src'
-import getPort from 'get-port'
+import { getPort } from './test-utils'
 import test from 'ava'
 
 test.before(async () => {
@@ -30,11 +30,7 @@ test.before(async () => {
 test.after(terminate)
 
 test.serial('has graphiql endpoint', async (t) => {
-  let res = await request(server)
-    .get('/')
-    .set('Accept', 'text/html')
-    .send()
-    .expect(200)
+  let res = await request(server).get('/').set('Accept', 'text/html').send().expect(200)
   t.truthy(res.text.includes('graphiql'))
 })
 
@@ -42,10 +38,6 @@ test.serial('graphiql endpoint returns 404 if disabled', async (t) => {
   setConfig({
     graphiql: false,
   })
-  let res = await request(server)
-    .get('/')
-    .set('Accept', 'text/html')
-    .send()
-    .expect(404)
+  let res = await request(server).get('/').set('Accept', 'text/html').send().expect(404)
   t.truthy(res.text.includes('Cannot GET /'))
 })
