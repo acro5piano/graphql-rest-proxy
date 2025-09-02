@@ -97,7 +97,7 @@ type Query {
 
 **Query with Parameters**
 
-You can refer the id of query args by `$id`.
+You can refer the id of query args by `^id`.
 
 ```graphql
 type User {
@@ -106,7 +106,7 @@ type User {
 }
 
 type Query {
-  getUserById(id: Int!): User @proxy(get: "https://my-rest-api.com/users/$id")
+  getUserById(id: Int!): User @proxy(get: "https://my-rest-api.com/users/^id")
 }
 ```
 
@@ -126,7 +126,7 @@ type User {
 
 type Mutation {
   createUser(user: UserInput!): User @proxy(post: "https://my-rest-api.com/users")
-  updateUser(id: Int!, user: UserInput!): User @proxy(patch: "https://my-rest-api.com/users/$id")
+  updateUser(id: Int!, user: UserInput!): User @proxy(patch: "https://my-rest-api.com/users/^id")
 }
 ```
 
@@ -159,7 +159,7 @@ fetch('http://localhost:5252/graphql', {
 
 **Nested Objects**
 
-You can refer the id of parent object by `$id`.
+You can refer the id of parent object by `^id`.
 
 ```graphql
 type Post {
@@ -170,7 +170,7 @@ type Post {
 type User {
   id: Int
   name: String
-  posts: [Post] @proxy(get: "https://my-rest-api.com/users/$id/posts")
+  posts: [Post] @proxy(get: "https://my-rest-api.com/users/^id/posts")
 }
 
 type Query {
@@ -245,7 +245,7 @@ type Post {
 type User {
   id: Int
   name: String
-  posts: [Post] @proxy(get: "https://my-rest-api.com/users/$id/posts")
+  posts: [Post] @proxy(get: "https://my-rest-api.com/users/^id/posts")
 }
 
 type Query {

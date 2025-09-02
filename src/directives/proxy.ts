@@ -50,13 +50,22 @@ function buildUri(uri: string, parent?: any, args?: any) {
 
   const parentWithArgs = Object.assign(parent, args);
   if (parentWithArgs) {
-      let temparr = builtUri.split('/');
-      temparr.forEach((item, index) => {
-          if (item.includes('$')) {
-              temparr[index] = String(parentWithArgs[item.replace('$', '')]);
-          }
-      });
-      builtUri = temparr.join('/');
+    // Legacy way to replace $param in the uri
+    let temparr = builtUri.split('/');
+    temparr.forEach((item, index) => {
+      if (item.includes('$')) {
+        temparr[index] = String(parentWithArgs[item.replace('$', '')]);
+      }
+    });
+    builtUri = temparr.join('/');
+
+    // New way to replace ^param in the uri
+    Object.keys(parentWithArgs).forEach(key => {
+      builtUri = builtUri.replace(
+        new RegExp(`\\^${key}`, 'g'),
+        encodeURIComponent(String(parentWithArgs[key]))
+      );
+    });
   }
 
   if (builtUri.startsWith('http')) {
