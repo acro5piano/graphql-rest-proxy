@@ -12,11 +12,11 @@ app.use((req, _res, next) => {
   next()
 })
 
-const userMock = {
-  id: 1,
+let userMock = (id: unknown = 1) => ({
+  id,
   name: 'Kazuya',
   isActive: true,
-}
+})
 
 const postMock = {
   id: 1,
@@ -24,19 +24,19 @@ const postMock = {
 }
 
 app.get('/user', (_req, res) => {
-  res.send(userMock)
+  res.send(userMock())
 })
 
 app.get('/users/:id', (_req, res) => {
-  res.send(userMock)
+  res.send(userMock(_req.params.id))
 })
 
 app.get('/user_with_posts', (_req, res) => {
-  res.send({ ...userMock, posts: [postMock] })
+  res.send({ ...userMock(), posts: [postMock] })
 })
 
 app.get('/users', (_req, res) => {
-  res.send([userMock, userMock])
+  res.send([userMock(), userMock()])
 })
 
 app.get('/users/:id/posts', (_req, res) => {
@@ -44,15 +44,15 @@ app.get('/users/:id/posts', (_req, res) => {
 })
 
 app.post('/users', (_req, res) => {
-  res.send(userMock)
+  res.send(userMock())
 })
 
 app.patch('/users/:id', (_req, res) => {
-  res.send(userMock)
+  res.send(userMock(_req.params.id))
 })
 
 app.put('/users/:id', (_req, res) => {
-  res.send(userMock)
+  res.send(userMock(_req.params.id))
 })
 
 let server: any
